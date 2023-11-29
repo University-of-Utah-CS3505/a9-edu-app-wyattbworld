@@ -18,6 +18,13 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             ui->gameView,
             &GameView::ReceiveBodies);
 
+    connect (ui->pushButton,
+            &QPushButton::clicked,
+            &model,
+            &Model::SendBodiesTemp);
+
+
+
 }
 
 MainWindow::~MainWindow()

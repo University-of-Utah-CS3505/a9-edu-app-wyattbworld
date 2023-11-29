@@ -18,9 +18,11 @@ private:
     b2World world;
     vector<b2Body*> bodies;
 
+public slots:
+    void SendBodiesTemp();
 signals:
     void UpdateView();
-    void SendBodies(vector<b2Body*> bodies);
+    void SendBodies(vector<b2Body*> &bodies);
 };
 
 #endif // MODEL_H

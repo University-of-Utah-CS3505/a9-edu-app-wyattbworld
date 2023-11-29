@@ -22,6 +22,8 @@ class GameView : public QWidget
 {
     Q_OBJECT
 
+    b2World world;
+
     vector<b2Body*> bodies;
 
 public:
@@ -34,7 +36,7 @@ private:
 
 public slots:
     void ReceiveUpdateRequest();
-    void ReceiveBodies(vector<b2Body*> sentBodies);
+    void ReceiveBodies(vector<b2Body*> &sentBodies);
 };
 
 #endif // GAMEVIEW_H
