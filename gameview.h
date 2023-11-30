@@ -33,6 +33,7 @@ public:
 private:
     Ui::GameView *ui;
     void paintEvent(QPaintEvent *event);
+    const int POSITIONSCALE = 200;
 
 public slots:
     void ReceiveUpdateRequest();

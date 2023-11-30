@@ -25,23 +25,31 @@ void GameView::ReceiveBodies(vector<b2Body*> &sentBodies)
 
 void GameView::ReceiveUpdateRequest()
 {
-    repaint();
+    update();
 }
 
 void GameView::paintEvent(QPaintEvent *)
 {
    QPainter painter(this);
-
    painter.setPen(QPen(Qt::black, 3));
 
-    QBrush brush(QColor(0,0,0,255));
+   // Brush determines fill color
+//   QBrush brush(QColor(0,0,0,255));
+//   painter.setBrush(brush);
+
     if (bodies.size() > 0){
-        QRect rect(bodies[0]->GetPosition().x+200, bodies[0]->GetPosition().y+200, 20, 20);
+        b2Vec2 position = bodies[0]->GetPosition();
+        qDebug() << "position: " << position.x + POSITIONSCALE << " " << position.y + POSITIONSCALE;
+        QRect rect(position.x + POSITIONSCALE, position.y + POSITIONSCALE, 20, 20);
         painter.drawRect(rect);
+
+        // Draw a circle
         //QPoint center(bodies[0]->GetPosition().x+200,bodies[0]->GetPosition().y+200);
         //painter.drawEllipse(center,(int) bodies[0]->GetFixtureList()->GetShape()->m_radius, (int) bodies[0]->GetFixtureList()->GetShape()->m_radius);
         //qDebug() << bodies[0]->GetPosition().x+200 << ", " << bodies[0]->GetPosition().y+200;
     }
-    QRect rect(200,300,200,200);
-    painter.drawRect(rect);
+
+    // Background outline
+    QRect backgroundRect(0, 0, this->width(), this->height());
+    painter.drawRect(backgroundRect);
 }

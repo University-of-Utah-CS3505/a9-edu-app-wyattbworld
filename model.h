@@ -4,6 +4,7 @@
 #include <QObject>
 #include <Box2D/Box2D.h>
 #include <stdio.h>
+#include <QTimer>
 
 using std::vector;
 
@@ -17,11 +18,18 @@ public:
 private:
     b2World world;
     vector<b2Body*> bodies;
+    const float32 timeStep = 1.0f / 60.0f;
+    const int32 velocityIterations = 6;
+    const int32 positionIterations = 2;
+
+    QTimer* timer;
 
 public slots:
     void SendBodiesTemp();
-signals:
     void UpdateView();
+
+signals:
+    void UpdateWorld();
     void SendBodies(vector<b2Body*> &bodies);
 };
 

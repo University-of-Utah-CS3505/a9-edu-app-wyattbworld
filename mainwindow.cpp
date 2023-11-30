@@ -9,7 +9,7 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
     ui->setupUi(this);
 
     connect(&model,
-            &Model::UpdateView,
+            &Model::UpdateWorld,
             ui->gameView,
             &GameView::ReceiveUpdateRequest);
 
@@ -17,8 +17,8 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &Model::SendBodies,
             ui->gameView,
             &GameView::ReceiveBodies);
-
-    connect (ui->pushButton,
+    
+    connect (ui->startButton,
             &QPushButton::clicked,
             &model,
             &Model::SendBodiesTemp);
