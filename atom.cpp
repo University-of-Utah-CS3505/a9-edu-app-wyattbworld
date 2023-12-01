@@ -7,6 +7,7 @@ Atom::Atom(QObject *parent,
 {
     atomicNumber = protonCount;
     elementNotation = elementAbbv;
+
     if (atomicNumber - 2 == 0 || (atomicNumber - 2) % 8 == 0)
     {
         isInert = true;
@@ -16,4 +17,22 @@ Atom::Atom(QObject *parent,
         isInert = true;
         isCatalyst = true;
     }
+}
+
+void Atom::Split()
+{
+    atomicNumber /= 2;
+    elementNotation = NOTATIONLIST[atomicNumber-1];
+    emit SpawnOtherHalf(atomicNumber);
+}
+
+void Atom::FuseElements(int otherProtonCount)
+{
+    atomicNumber += otherProtonCount;
+    elementNotation = NOTATIONLIST[atomicNumber-1];
+}
+
+void Atom::Catalyze(Atom otherAtom)
+{
+    otherAtom.Split();
 }

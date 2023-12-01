@@ -15,6 +15,8 @@ public:
                   QString elementAbbv = "H");
     bool isInert;
     bool isCatalyst;
+    void Split();
+    Atom CopyAtom();
 private:
     const std::vector<QString> NOTATIONLIST = {"H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
                                                "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar",
@@ -24,9 +26,11 @@ private:
     QString elementNotation;
 
 signals:
+    void SpawnOtherHalf(int protonCount);
 
 public slots:
     void FuseElements(int otherProtonCount);
+    void Catalyze(Atom otherAtom);
 
 };
 
