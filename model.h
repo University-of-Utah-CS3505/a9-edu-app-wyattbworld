@@ -21,13 +21,13 @@ private:
     const float32 timeStep = 1.0f / 60.0f;
     const int32 velocityIterations = 6;
     const int32 positionIterations = 2;
-    void makeCircleBody(float x, float y, float radius);
 
     QTimer* timer;
 
 public slots:
     void SendBodiesTemp();
     void UpdateView();
+    void MakeCircleBody(float x, float y, float radius);
 
 signals:
     void UpdateWorld();

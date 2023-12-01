@@ -66,7 +66,7 @@ void GameView::paintEvent(QPaintEvent *)
             QPoint center(position.x + POSITIONSCALE, position.y + POSITIONSCALE);
 
             painter.drawEllipse(center, radius, radius);
-            qDebug() << bodies[i]->GetPosition().x+POSITIONSCALE << ", " << bodies[i]->GetPosition().y+POSITIONSCALE;
+//            qDebug() << bodies[i]->GetPosition().x+POSITIONSCALE << ", " << bodies[i]->GetPosition().y+POSITIONSCALE;
         }
     }
 
@@ -75,4 +75,10 @@ void GameView::paintEvent(QPaintEvent *)
     // Background outline
     QRect backgroundRect(0, 0, this->width(), this->height());
     painter.drawRect(backgroundRect);
+}
+
+void GameView::mousePressEvent(QMouseEvent *event)
+{
+    qDebug() << event->pos().x() << " " << event->pos().y();
+    emit RequestMakeCircleBody(event->pos().x(), event->pos().y(), 20);
 }

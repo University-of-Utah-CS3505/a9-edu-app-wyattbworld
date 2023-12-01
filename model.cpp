@@ -80,12 +80,13 @@ Model::Model(QObject *parent)
         bodies.push_back(groundBody);
         bodies.push_back(leftWallBody);
         bodies.push_back(rightWallBody);
-        makeCircleBody(0.0f, 0.0f, 20.0f);
-        makeCircleBody(10.0f, 50.0f, 30.0f);
+        MakeCircleBody(0.0f, 0.0f, 20.0f);
+        MakeCircleBody(10.0f, 50.0f, 30.0f);
 }
 
-void Model::makeCircleBody(float x, float y, float radius)
+void Model::MakeCircleBody(float x, float y, float radius)
 {
+        qDebug() << "making circle with " << x << ", " << y << "and " << radius;
         b2BodyDef circleDef;
         circleDef.type = b2_dynamicBody;
         circleDef.position.Set(x, y);
@@ -120,8 +121,8 @@ void Model::BeginGame()
 void Model::UpdateView()
 {
     world.Step(timeStep, velocityIterations, positionIterations);
-    b2Vec2 position = bodies[0]->GetPosition();
-    qDebug() << "position: " << position.x << " " << position.y;
+//    b2Vec2 position = bodies[0]->GetPosition();
+//    qDebug() << "position: " << position.x << " " << position.y;
     emit UpdateWorld();
 }
 
