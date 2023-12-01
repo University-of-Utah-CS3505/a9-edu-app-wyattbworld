@@ -19,7 +19,6 @@ GameView::~GameView()
 
 void GameView::ReceiveBodies(vector<b2Body*> &sentBodies)
 {
-    qDebug() << "Sending";
     bodies = sentBodies;
 }
 
@@ -39,13 +38,6 @@ void GameView::paintEvent(QPaintEvent *)
     if (bodies.size() > 0){
         b2Vec2 position = bodies[0]->GetPosition();
 
-
-        // Draw a circle
-
-
-//           QBrush brush(QColor(0,0,0,255));
-//           painter.setBrush(brush);
-
         position = bodies[0]->GetPosition();
         QRect rect(position.x + POSITIONSCALE - 500, position.y + POSITIONSCALE - 1, 1000, 2);
         painter.fillRect(rect, QColor(0,0,0,255));
@@ -60,17 +52,13 @@ void GameView::paintEvent(QPaintEvent *)
 
         for (int i = 3; i < bodies.size(); i++)
         {
-
             position = bodies[i]->GetPosition();
             int radius = bodies[i]->GetFixtureList()->GetShape()->m_radius;
             QPoint center(position.x + POSITIONSCALE, position.y + POSITIONSCALE);
 
             painter.drawEllipse(center, radius, radius);
-//            qDebug() << bodies[i]->GetPosition().x+POSITIONSCALE << ", " << bodies[i]->GetPosition().y+POSITIONSCALE;
         }
     }
-
-
 
     // Background outline
     QRect backgroundRect(0, 0, this->width(), this->height());
@@ -79,6 +67,11 @@ void GameView::paintEvent(QPaintEvent *)
 
 void GameView::mousePressEvent(QMouseEvent *event)
 {
-    qDebug() << event->pos().x() << " " << event->pos().y();
-    emit RequestMakeCircleBody(event->pos().x(), event->pos().y(), 20);
+    if (event->pos().x() > -140 + POSITIONSCALE && event->pos().x() < 140 + POSITIONSCALE) //Make sure the ball is inside the testtube. 140 are magic numbers that must be changed if you change the size of the walls.
+    {
+        if ( bodies.size() > 0) //Make sure there are bodies in the game world.
+        {
+        emit RequestMakeCircleBody(event->pos().x() -POSITIONSCALE , -POSITIONSCALE, 10.0f);
+        }
+    }
 }

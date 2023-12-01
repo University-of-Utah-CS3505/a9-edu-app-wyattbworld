@@ -45,37 +45,6 @@ Model::Model(QObject *parent)
         rightWallBox.SetAsBox(2.0f, 500.0f);
         rightWallBody->CreateFixture(&rightWallBox, 0.0f);
 
-
-    // Make a circle body
-
-
-
-
-        // Define the dynamic body. We set its position and call the body factory.
-//        b2BodyDef bodyDef;
-//        bodyDef.type = b2_dynamicBody;
-
-//        // Set up the initial position of the body
-//        bodyDef.position.Set(0.0f, 0.0f);
-
-//        b2Body* body = world.CreateBody(&bodyDef);
-
-//        // Define another box shape for our dynamic body.
-//        b2PolygonShape dynamicBox;
-//        dynamicBox.SetAsBox(1.0f, 1.0f);
-
-//        // Define the dynamic body fixture.
-//        b2FixtureDef fixtureDef;
-//        fixtureDef.shape = &dynamicBox;
-//        fixtureDef.density = 1.0f;
-//        fixtureDef.friction = 0.3f;
-//        // Restitution sets up bounciness.
-//        fixtureDef.restitution = 1.0f;
-//        // Add the shape to the body.
-//        body->CreateFixture(&fixtureDef);
-
-
-
         // Unsure if we need to add ground to bodies
         bodies.push_back(groundBody);
         bodies.push_back(leftWallBody);
@@ -86,7 +55,6 @@ Model::Model(QObject *parent)
 
 void Model::MakeCircleBody(float x, float y, float radius)
 {
-        qDebug() << "making circle with " << x << ", " << y << "and " << radius;
         b2BodyDef circleDef;
         circleDef.type = b2_dynamicBody;
         circleDef.position.Set(x, y);
@@ -102,27 +70,16 @@ void Model::MakeCircleBody(float x, float y, float radius)
         fixtureDef.restitution = 0.9f;
         circleBody->CreateFixture(&fixtureDef);
         bodies.push_back(circleBody);
+        emit SendBodies(bodies);
 }
 void Model::BeginGame()
 {
-//   // This is our little game loop.
-//    for (int32 i = 0; i < 60; ++i)
-//    {
-//        // Instruct the world to perform a single step of simulation.
-//        // It is generally best to keep the time step and iterations fixed.
-//        world.Step(timeStep, velocityIterations, positionIterations);
-//        b2Vec2 position = bodies[0]->GetPosition();
-//        qDebug() << "m position: " << position.x << " " << position.y;
-//        emit UpdateWorld();
-//    }
     timer->start(1000/60);
 }
 
 void Model::UpdateView()
 {
     world.Step(timeStep, velocityIterations, positionIterations);
-//    b2Vec2 position = bodies[0]->GetPosition();
-//    qDebug() << "position: " << position.x << " " << position.y;
     emit UpdateWorld();
 }
 
