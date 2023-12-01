@@ -53,7 +53,7 @@ void Atom::FuseElements(int otherProtonCount)
     elementNotation = NOTATIONLIST[atomicNumber-1];
 }
 
-void Atom::Catalyze(Atom otherAtom)
+void Atom::Catalyze(Atom &otherAtom)
 {
     // Split the colliding atom.
     otherAtom.Split();

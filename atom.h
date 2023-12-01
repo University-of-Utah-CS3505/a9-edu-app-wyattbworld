@@ -48,7 +48,7 @@ public slots:
     /// \brief Catalyze is only called if this Atom is a catalyst. It splits the Atom it collided with.
     /// \param otherAtom The Atom to be split.
     ///
-    void Catalyze (Atom otherAtom);
+    void Catalyze (Atom& otherAtom);
 
 };
 
