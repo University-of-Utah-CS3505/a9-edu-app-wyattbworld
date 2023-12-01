@@ -18,7 +18,7 @@ Model::Model(QObject *parent)
         b2BodyDef groundBodyDef;
 
         // Set up the ground position. 90 seems to match the gameview's ground
-        groundBodyDef.position.Set(0.0f, 90.0f);
+        groundBodyDef.position.Set(0.0f, 100.0f);
 
         // Call the body factory which allocates memory for the ground body
         // from a pool and creates the ground box shape (also from a pool).
@@ -27,28 +27,27 @@ Model::Model(QObject *parent)
         // Define the ground box shape.
         b2PolygonShape groundBox;
         // The extents are the half-widths of the box.
-        groundBox.SetAsBox(500.0f, 10.0f);
+        groundBox.SetAsBox(500.0f, 2.0f);
         // Add the ground fixture to the ground body.
         groundBody->CreateFixture(&groundBox, 0.0f);
 
+        b2BodyDef leftWallBodyDef;
+        leftWallBodyDef.position.Set(-150.0f, -100.0f);
+        b2Body* leftWallBody = world.CreateBody(&leftWallBodyDef);
+        b2PolygonShape leftWallBox;
+        leftWallBox.SetAsBox(2.0f, 500.0f);
+        leftWallBody->CreateFixture(&leftWallBox, 0.0f);
 
+        b2BodyDef rightWallBodyDef;
+        rightWallBodyDef.position.Set(150.0f, -100.0f);
+        b2Body* rightWallBody = world.CreateBody(&rightWallBodyDef);
+        b2PolygonShape rightWallBox;
+        rightWallBox.SetAsBox(2.0f, 500.0f);
+        rightWallBody->CreateFixture(&rightWallBox, 0.0f);
 
 
     // Make a circle body
-        b2BodyDef circleDef;
-        circleDef.type = b2_dynamicBody;
-        circleDef.position.Set(0.0f, 0.0f);
-        b2Body* circleBody = world.CreateBody(&circleDef);
 
-        b2CircleShape circleShape;
-        circleShape.m_radius = 20.0f;
-
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = &circleShape;
-        fixtureDef.density = 1.0f;
-        fixtureDef.friction = 0.3f;
-        fixtureDef.restitution = 1.0f;
-        circleBody->CreateFixture(&circleShape, 0.0f);
 
 
 
@@ -75,13 +74,34 @@ Model::Model(QObject *parent)
 //        // Add the shape to the body.
 //        body->CreateFixture(&fixtureDef);
 
-//        bodies.push_back(body);
-        bodies.push_back(circleBody);
+
 
         // Unsure if we need to add ground to bodies
-//        bodies.push_back(groundBody);
+        bodies.push_back(groundBody);
+        bodies.push_back(leftWallBody);
+        bodies.push_back(rightWallBody);
+        makeCircleBody(0.0f, 0.0f, 20.0f);
+        makeCircleBody(10.0f, 50.0f, 30.0f);
 }
 
+void Model::makeCircleBody(float x, float y, float radius)
+{
+        b2BodyDef circleDef;
+        circleDef.type = b2_dynamicBody;
+        circleDef.position.Set(x, y);
+        b2Body* circleBody = world.CreateBody(&circleDef);
+
+        b2CircleShape circleShape;
+        circleShape.m_radius = radius;
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &circleShape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+        fixtureDef.restitution = 0.9f;
+        circleBody->CreateFixture(&fixtureDef);
+        bodies.push_back(circleBody);
+}
 void Model::BeginGame()
 {
 //   // This is our little game loop.

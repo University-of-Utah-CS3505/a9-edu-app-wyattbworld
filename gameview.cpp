@@ -34,21 +34,43 @@ void GameView::paintEvent(QPaintEvent *)
    painter.setPen(QPen(Qt::black, 3));
 
    // Brush determines fill color
-//   QBrush brush(QColor(0,0,0,255));
-//   painter.setBrush(brush);
+
 
     if (bodies.size() > 0){
         b2Vec2 position = bodies[0]->GetPosition();
-        int radius = bodies[0]->GetFixtureList()->GetShape()->m_radius;
-        qDebug() << "position: " << position.x << " " << position.y;
+
+
         // Draw a circle
-        QPoint center(position.x, position.y);
-        painter.drawEllipse(center, radius, radius);
 
-//        QRect rect(position.x + POSITIONSCALE, position.y + POSITIONSCALE, 20, 20);
-//        painter.drawRect(rect);
 
+//           QBrush brush(QColor(0,0,0,255));
+//           painter.setBrush(brush);
+
+        position = bodies[0]->GetPosition();
+        QRect rect(position.x + POSITIONSCALE - 500, position.y + POSITIONSCALE - 1, 1000, 2);
+        painter.fillRect(rect, QColor(0,0,0,255));
+
+        position = bodies[1]->GetPosition();
+        QRect leftRect(position.x + POSITIONSCALE - 1, position.y + POSITIONSCALE - 500, 2, 1000);
+        painter.fillRect(leftRect, QColor(0,0,0,255));
+
+        position = bodies[2]->GetPosition();
+        QRect rightRect(position.x + POSITIONSCALE - 1, position.y + POSITIONSCALE - 500, 2, 1000);
+        painter.fillRect(rightRect, QColor(0,0,0,255));
+
+        for (int i = 3; i < bodies.size(); i++)
+        {
+
+            position = bodies[i]->GetPosition();
+            int radius = bodies[i]->GetFixtureList()->GetShape()->m_radius;
+            QPoint center(position.x + POSITIONSCALE, position.y + POSITIONSCALE);
+
+            painter.drawEllipse(center, radius, radius);
+            qDebug() << bodies[i]->GetPosition().x+POSITIONSCALE << ", " << bodies[i]->GetPosition().y+POSITIONSCALE;
+        }
     }
+
+
 
     // Background outline
     QRect backgroundRect(0, 0, this->width(), this->height());
