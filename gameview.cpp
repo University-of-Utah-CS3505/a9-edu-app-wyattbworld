@@ -39,14 +39,15 @@ void GameView::paintEvent(QPaintEvent *)
 
     if (bodies.size() > 0){
         b2Vec2 position = bodies[0]->GetPosition();
-        qDebug() << "position: " << position.x + POSITIONSCALE << " " << position.y + POSITIONSCALE;
-        QRect rect(position.x + POSITIONSCALE, position.y + POSITIONSCALE, 20, 20);
-        painter.drawRect(rect);
-
+        int radius = bodies[0]->GetFixtureList()->GetShape()->m_radius;
+        qDebug() << "position: " << position.x << " " << position.y;
         // Draw a circle
-        //QPoint center(bodies[0]->GetPosition().x+200,bodies[0]->GetPosition().y+200);
-        //painter.drawEllipse(center,(int) bodies[0]->GetFixtureList()->GetShape()->m_radius, (int) bodies[0]->GetFixtureList()->GetShape()->m_radius);
-        //qDebug() << bodies[0]->GetPosition().x+200 << ", " << bodies[0]->GetPosition().y+200;
+        QPoint center(position.x, position.y);
+        painter.drawEllipse(center, radius, radius);
+
+//        QRect rect(position.x + POSITIONSCALE, position.y + POSITIONSCALE, 20, 20);
+//        painter.drawRect(rect);
+
     }
 
     // Background outline
