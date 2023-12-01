@@ -19,6 +19,11 @@ Atom::Atom(QObject *parent,
     }
 }
 
+Atom* Atom::CopyAtom()
+{
+    return new Atom(nullptr, atomicNumber, elementNotation);
+}
+
 void Atom::Split()
 {
     atomicNumber /= 2;

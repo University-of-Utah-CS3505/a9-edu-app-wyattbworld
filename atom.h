@@ -16,7 +16,7 @@ public:
     bool isInert;
     bool isCatalyst;
     void Split();
-    Atom CopyAtom();
+    Atom* CopyAtom();
 private:
     const std::vector<QString> NOTATIONLIST = {"H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
                                                "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar",
