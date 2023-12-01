@@ -5,6 +5,8 @@
 #include <Box2D/Box2D.h>
 #include <stdio.h>
 #include <QTimer>
+#include <atom.h>
+#include <vector>
 
 using std::vector;
 
@@ -23,6 +25,7 @@ private:
     const int32 positionIterations = 2;
 
     QTimer* timer;
+    Atom elementList[54];
 
 public slots:
     void SendBodiesTemp();

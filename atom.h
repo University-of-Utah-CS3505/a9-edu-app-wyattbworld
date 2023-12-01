@@ -10,27 +10,45 @@ class Atom : public QObject
     Q_OBJECT
 
 public:
-    explicit Atom(QObject *parent = nullptr,
+    explicit Atom (QObject *parent = nullptr,
                   int protonCount = 1,
                   QString elementAbbv = "H");
-    bool isInert;
-    bool isCatalyst;
-    void Split();
-    Atom* CopyAtom();
+    Atom& operator= (Atom other);       // Assignment overload
+    bool isInert;                       // Defines whether this atom reacts with others.
+    bool isCatalyst;                    // Defines whether this atom can catalyze.
+    ///
+    /// \brief Split divides this Atom in two, halving its proton count and spawning an identical Atom.
+    ///
+    void Split ();
+    ///
+    /// \brief CopyAtom creates a copy of this Atom object.
+    /// \return The copy of this Atom.
+    ///
+    Atom* CopyAtom ();
+    static const std::vector<QString> NOTATIONLIST; // The list of all elements being used in the game.
+
 private:
-    const std::vector<QString> NOTATIONLIST = {"H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
-                                               "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar",
-                                               "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr",
-                                               "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe"};
-    int atomicNumber;
-    QString elementNotation;
+    int atomicNumber;                   // The number of protons in this Atom.
+    QString elementNotation;            // This Atom's chemical notation.
 
 signals:
-    void SpawnOtherHalf(int protonCount);
+    ///
+    /// \brief SpawnOtherHalf request to spawn the other half of this Atom when it is split by a catalyst.
+    /// \param protonCount  The other half of the protons.
+    ///
+    void SpawnOtherHalf (int protonCount);
 
 public slots:
-    void FuseElements(int otherProtonCount);
-    void Catalyze(Atom otherAtom);
+    ///
+    /// \brief FuseElements combines two Atoms upon collision.
+    /// \param otherProtonCount The amount of protons to be added to this atom.
+    ///
+    void FuseElements (int otherProtonCount);
+    ///
+    /// \brief Catalyze is only called if this Atom is a catalyst. It splits the Atom it collided with.
+    /// \param otherAtom The Atom to be split.
+    ///
+    void Catalyze (Atom otherAtom);
 
 };
 
