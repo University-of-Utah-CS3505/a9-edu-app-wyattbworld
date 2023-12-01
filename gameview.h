@@ -36,6 +36,8 @@ private:
     void paintEvent(QPaintEvent *event);
     const int POSITIONSCALE = 200;
     void mousePressEvent(QMouseEvent *event);
+    const int CIRCLEDROPTIME = 500; //The minimum interval of time (in milliseconds) that the user can drop circles.
+    bool dropEnabled; //Determines whether the user is allowed to drop elements into the jar.
 
 public slots:
     void ReceiveUpdateRequest();

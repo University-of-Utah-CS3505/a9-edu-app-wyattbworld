@@ -2,6 +2,7 @@
 #include "ui_gameview.h"
 #include <QDebug>
 #include <QWidget>
+#include <QTimer>
 
 GameView::GameView(QWidget *parent) :
     QWidget(parent),
@@ -10,6 +11,7 @@ GameView::GameView(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    dropEnabled = true;
 }
 
 GameView::~GameView()
@@ -71,7 +73,12 @@ void GameView::mousePressEvent(QMouseEvent *event)
     {
         if ( bodies.size() > 0) //Make sure there are bodies in the game world.
         {
-        emit RequestMakeCircleBody(event->pos().x() -POSITIONSCALE , -POSITIONSCALE, 10.0f);
+            if (dropEnabled)
+            {
+                dropEnabled=false; //Make it so the user has to wait before sending the next circle.
+                QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
+                emit RequestMakeCircleBody(event->pos().x() -POSITIONSCALE , -POSITIONSCALE, 10.0f);
+            }
         }
     }
 }

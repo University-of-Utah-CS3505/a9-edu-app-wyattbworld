@@ -22,6 +22,7 @@ private:
     const int32 velocityIterations = 6;
     const int32 positionIterations = 2;
 
+
     QTimer* timer;
 
 public slots:

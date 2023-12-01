@@ -14,6 +14,7 @@ Model::Model(QObject *parent)
             &Model::UpdateView);
 
 
+
         // Define the ground body.
         b2BodyDef groundBodyDef;
 
@@ -51,6 +52,7 @@ Model::Model(QObject *parent)
         bodies.push_back(rightWallBody);
         MakeCircleBody(0.0f, 0.0f, 20.0f);
         MakeCircleBody(10.0f, 50.0f, 30.0f);
+
 }
 
 void Model::MakeCircleBody(float x, float y, float radius)
