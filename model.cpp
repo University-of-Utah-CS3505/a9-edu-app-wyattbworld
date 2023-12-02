@@ -52,7 +52,7 @@ Model::Model(QObject *parent)
         // Create a repository for all potential Atoms in the game.
         for (unsigned int i = 0; i < 10; i++)
         {
-            elementList.push_back(new Atom (nullptr, i-1));
+            elementList.push_back(new Atom (nullptr, i));
         }
         bodies.push_back(leftWallBody);
         bodies.push_back(rightWallBody);

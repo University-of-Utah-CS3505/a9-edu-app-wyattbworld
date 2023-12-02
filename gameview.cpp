@@ -43,25 +43,25 @@ void GameView::paintEvent(QPaintEvent *)
 
 
     if (bodies.size() > 0){
-        b2Vec2 position = bodies[0]->GetPosition();
 
-        position = bodies[0]->GetPosition();
-        QRect rect(position.x + POSITIONSCALE - 500, position.y + POSITIONSCALE - 1, 1000, 2);
+       QPoint position = ModelToGameView(bodies[0]->GetPosition());
+
+        QRect rect(position.x() - 500, position.y() - 1, 1000, 2);
         painter.fillRect(rect, QColor(0,0,0,255));
 
-        position = bodies[1]->GetPosition();
-        QRect leftRect(position.x + POSITIONSCALE - 1, position.y + POSITIONSCALE - 500, 2, 1000);
+        position = ModelToGameView(bodies[1]->GetPosition());
+        QRect leftRect(position.x() - 1, position.y() - 500, 2, 1000);
         painter.fillRect(leftRect, QColor(0,0,0,255));
 
-        position = bodies[2]->GetPosition();
-        QRect rightRect(position.x + POSITIONSCALE - 1, position.y + POSITIONSCALE - 500, 2, 1000);
+        position = ModelToGameView(bodies[2]->GetPosition());
+        QRect rightRect(position.x() - 1, position.y() - 500, 2, 1000);
         painter.fillRect(rightRect, QColor(0,0,0,255));
 
         for (unsigned int i = 3; i < bodies.size(); i++)
         {
-            position = bodies[i]->GetPosition();
+            position = ModelToGameView(bodies[i]->GetPosition());
             int radius = bodies[i]->GetFixtureList()->GetShape()->m_radius;
-            QPoint center(position.x + POSITIONSCALE, position.y + POSITIONSCALE);
+            QPoint center(position.x(), position.y());
 
             painter.drawEllipse(center, radius, radius);
         }
@@ -74,13 +74,23 @@ void GameView::paintEvent(QPaintEvent *)
 
 void GameView::mousePressEvent(QMouseEvent *event)
 {
-    if (event->pos().x() > -140 + POSITIONSCALE && event->pos().x() < 140 + POSITIONSCALE) //Make sure the ball is inside the testtube. 140 are magic numbers that must be changed if you change the size of the walls.
+    if (GameViewToModel(event->pos()).x > -140 && GameViewToModel(event->pos()).x < 140) //Make sure the ball is inside the testtube. 140 are magic numbers that must be changed if you change the size of the walls.
     {
         if (dropEnabled)
         {
             dropEnabled=false; //Make it so the user has to wait before sending the next circle.
             QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
-            emit RequestMakeCircleBody(event->pos().x() -POSITIONSCALE , -POSITIONSCALE, 10.0f);
+            emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, 10.0f);
         }
     }
+}
+
+QPoint GameView::ModelToGameView(b2Vec2 coord)
+{
+    return QPoint(coord.x + POSITIONSCALE, coord.y + POSITIONSCALE);
+}
+
+b2Vec2 GameView::GameViewToModel(QPoint coord)
+{
+    return b2Vec2(coord.x() - POSITIONSCALE, coord.y() - POSITIONSCALE);
 }
