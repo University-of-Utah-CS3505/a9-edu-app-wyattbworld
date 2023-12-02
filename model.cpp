@@ -50,9 +50,6 @@ Model::Model(QObject *parent)
         bodies.push_back(groundBody);
         bodies.push_back(leftWallBody);
         bodies.push_back(rightWallBody);
-        MakeCircleBody(0.0f, 0.0f, 20.0f);
-        MakeCircleBody(10.0f, 50.0f, 30.0f);
-
 }
 
 void Model::MakeCircleBody(float x, float y, float radius)
@@ -77,6 +74,7 @@ void Model::MakeCircleBody(float x, float y, float radius)
 void Model::BeginGame()
 {
     timer->start(1000/60);
+    emit SendStartGame();
 }
 
 void Model::UpdateView()

@@ -27,6 +27,11 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &GameView::RequestMakeCircleBody,
             &model,
             &Model::MakeCircleBody);
+
+    connect (&model,
+            &Model::SendStartGame,
+            ui->gameView,
+            &GameView::ReceiveStartGame);
 }
 
 MainWindow::~MainWindow()

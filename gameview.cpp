@@ -11,7 +11,7 @@ GameView::GameView(QWidget *parent) :
 {
 
     ui->setupUi(this);
-    dropEnabled = true;
+    dropEnabled = false;
 }
 
 GameView::~GameView()
@@ -22,6 +22,11 @@ GameView::~GameView()
 void GameView::ReceiveBodies(vector<b2Body*> &sentBodies)
 {
     bodies = sentBodies;
+}
+
+void GameView::ReceiveStartGame()
+{
+    dropEnabled = true;
 }
 
 void GameView::ReceiveUpdateRequest()
@@ -52,7 +57,7 @@ void GameView::paintEvent(QPaintEvent *)
         QRect rightRect(position.x + POSITIONSCALE - 1, position.y + POSITIONSCALE - 500, 2, 1000);
         painter.fillRect(rightRect, QColor(0,0,0,255));
 
-        for (int i = 3; i < bodies.size(); i++)
+        for (unsigned int i = 3; i < bodies.size(); i++)
         {
             position = bodies[i]->GetPosition();
             int radius = bodies[i]->GetFixtureList()->GetShape()->m_radius;
@@ -71,14 +76,11 @@ void GameView::mousePressEvent(QMouseEvent *event)
 {
     if (event->pos().x() > -140 + POSITIONSCALE && event->pos().x() < 140 + POSITIONSCALE) //Make sure the ball is inside the testtube. 140 are magic numbers that must be changed if you change the size of the walls.
     {
-        if ( bodies.size() > 0) //Make sure there are bodies in the game world.
+        if (dropEnabled)
         {
-            if (dropEnabled)
-            {
-                dropEnabled=false; //Make it so the user has to wait before sending the next circle.
-                QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
-                emit RequestMakeCircleBody(event->pos().x() -POSITIONSCALE , -POSITIONSCALE, 10.0f);
-            }
+            dropEnabled=false; //Make it so the user has to wait before sending the next circle.
+            QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
+            emit RequestMakeCircleBody(event->pos().x() -POSITIONSCALE , -POSITIONSCALE, 10.0f);
         }
     }
 }

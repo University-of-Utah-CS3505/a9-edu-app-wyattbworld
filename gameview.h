@@ -40,6 +40,7 @@ private:
     bool dropEnabled; //Determines whether the user is allowed to drop elements into the jar.
 
 public slots:
+    void ReceiveStartGame();
     void ReceiveUpdateRequest();
     void ReceiveBodies(vector<b2Body*> &sentBodies);
 

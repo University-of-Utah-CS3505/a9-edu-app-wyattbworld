@@ -33,6 +33,7 @@ public slots:
 signals:
     void UpdateWorld();
     void SendBodies(vector<b2Body*> &bodies);
+    void SendStartGame();
 };
 
 #endif // MODEL_H
