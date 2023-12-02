@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <vector>
+#include <math.h>
 
 class Atom : public QObject
 {
@@ -11,8 +12,7 @@ class Atom : public QObject
 
 public:
     explicit Atom (QObject *parent = nullptr,
-                  int protonCount = 1,
-                  QString elementAbbv = "H");
+                  int protonCount = 1);
     Atom& operator= (Atom other);       // Assignment overload
     bool isInert;                       // Defines whether this atom reacts with others.
     bool isCatalyst;                    // Defines whether this atom can catalyze.
@@ -26,10 +26,13 @@ public:
     ///
     Atom* CopyAtom ();
     static const std::vector<QString> NOTATIONLIST; // The list of all elements being used in the game.
-
-private:
     int atomicNumber;                   // The number of protons in this Atom.
     QString elementNotation;            // This Atom's chemical notation.
+    float radius;
+
+
+private:
+    int logbase;
 
 signals:
     ///

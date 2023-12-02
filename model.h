@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <QTimer>
 #include <atom.h>
-#include <vector>
+#include <Qvector>
 
 using std::vector;
 
@@ -25,7 +25,7 @@ private:
     const int32 positionIterations = 2;
 
     QTimer* timer;
-    Atom elementList[54];
+    QVector<Atom*> elementList;
 
 public slots:
     void SendBodiesTemp();

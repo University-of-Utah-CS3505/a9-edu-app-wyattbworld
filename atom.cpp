@@ -7,12 +7,13 @@ const std::vector<QString> Atom::NOTATIONLIST = {"H", "He", "Li", "Be", "B", "C"
                                                         "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe"};
 
 Atom::Atom(QObject *parent,
-           int protonCount,
-           QString elementAbbv)
+           int protonCount)
     : QObject{parent}
 {
+    logbase = std::exp(1.0);
     atomicNumber = protonCount;
-    elementNotation = elementAbbv;
+    elementNotation = NOTATIONLIST[atomicNumber-1];
+    radius = log2(atomicNumber)/log2(logbase);
 
     // Elements with protons in multiples of 8 plus 2 are inert and do not combine with other atoms.
     if (atomicNumber - 2 == 0 || (atomicNumber - 2) % 8 == 0)
@@ -25,17 +26,6 @@ Atom::Atom(QObject *parent,
         isInert = true;
         isCatalyst = true;
     }
-}
-Atom& Atom::operator=(Atom other)
-{
-    atomicNumber = other.atomicNumber;
-    elementNotation = other.elementNotation;
-    return *this;
-}
-
-Atom* Atom::CopyAtom()
-{
-    return new Atom(nullptr, atomicNumber, elementNotation);
 }
 
 void Atom::Split()
