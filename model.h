@@ -24,16 +24,19 @@ private:
     const int32 velocityIterations = 6;
     const int32 positionIterations = 2;
 
+
     QTimer* timer;
     QVector<Atom*> elementList;
 
 public slots:
     void SendBodiesTemp();
     void UpdateView();
+    void MakeCircleBody(float x, float y, float radius);
 
 signals:
     void UpdateWorld();
     void SendBodies(vector<b2Body*> &bodies);
+    void SendStartGame();
 };
 
 #endif // MODEL_H

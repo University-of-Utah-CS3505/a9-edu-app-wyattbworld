@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <QColor>
 #include <QRect>
+#include <QMouseEvent>
 
 #include <Box2D/Box2D.h>
 #include <stdio.h>
@@ -34,10 +35,17 @@ private:
     Ui::GameView *ui;
     void paintEvent(QPaintEvent *event);
     const int POSITIONSCALE = 200;
+    void mousePressEvent(QMouseEvent *event);
+    const int CIRCLEDROPTIME = 500; //The minimum interval of time (in milliseconds) that the user can drop circles.
+    bool dropEnabled; //Determines whether the user is allowed to drop elements into the jar.
 
 public slots:
+    void ReceiveStartGame();
     void ReceiveUpdateRequest();
     void ReceiveBodies(vector<b2Body*> &sentBodies);
+
+signals:
+    void RequestMakeCircleBody(float, float, float);
 };
 
 #endif // GAMEVIEW_H

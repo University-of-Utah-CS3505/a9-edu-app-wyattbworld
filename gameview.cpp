@@ -2,6 +2,7 @@
 #include "ui_gameview.h"
 #include <QDebug>
 #include <QWidget>
+#include <QTimer>
 
 GameView::GameView(QWidget *parent) :
     QWidget(parent),
@@ -10,6 +11,7 @@ GameView::GameView(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    dropEnabled = false;
 }
 
 GameView::~GameView()
@@ -19,8 +21,12 @@ GameView::~GameView()
 
 void GameView::ReceiveBodies(vector<b2Body*> &sentBodies)
 {
-    qDebug() << "Sending";
     bodies = sentBodies;
+}
+
+void GameView::ReceiveStartGame()
+{
+    dropEnabled = true;
 }
 
 void GameView::ReceiveUpdateRequest()
@@ -34,22 +40,47 @@ void GameView::paintEvent(QPaintEvent *)
    painter.setPen(QPen(Qt::black, 3));
 
    // Brush determines fill color
-//   QBrush brush(QColor(0,0,0,255));
-//   painter.setBrush(brush);
+
 
     if (bodies.size() > 0){
         b2Vec2 position = bodies[0]->GetPosition();
-        qDebug() << "position: " << position.x + POSITIONSCALE << " " << position.y + POSITIONSCALE;
-        QRect rect(position.x + POSITIONSCALE, position.y + POSITIONSCALE, 20, 20);
-        painter.drawRect(rect);
 
-        // Draw a circle
-        //QPoint center(bodies[0]->GetPosition().x+200,bodies[0]->GetPosition().y+200);
-        //painter.drawEllipse(center,(int) bodies[0]->GetFixtureList()->GetShape()->m_radius, (int) bodies[0]->GetFixtureList()->GetShape()->m_radius);
-        //qDebug() << bodies[0]->GetPosition().x+200 << ", " << bodies[0]->GetPosition().y+200;
+        position = bodies[0]->GetPosition();
+        QRect rect(position.x + POSITIONSCALE - 500, position.y + POSITIONSCALE - 1, 1000, 2);
+        painter.fillRect(rect, QColor(0,0,0,255));
+
+        position = bodies[1]->GetPosition();
+        QRect leftRect(position.x + POSITIONSCALE - 1, position.y + POSITIONSCALE - 500, 2, 1000);
+        painter.fillRect(leftRect, QColor(0,0,0,255));
+
+        position = bodies[2]->GetPosition();
+        QRect rightRect(position.x + POSITIONSCALE - 1, position.y + POSITIONSCALE - 500, 2, 1000);
+        painter.fillRect(rightRect, QColor(0,0,0,255));
+
+        for (unsigned int i = 3; i < bodies.size(); i++)
+        {
+            position = bodies[i]->GetPosition();
+            int radius = bodies[i]->GetFixtureList()->GetShape()->m_radius;
+            QPoint center(position.x + POSITIONSCALE, position.y + POSITIONSCALE);
+
+            painter.drawEllipse(center, radius, radius);
+        }
     }
 
     // Background outline
     QRect backgroundRect(0, 0, this->width(), this->height());
     painter.drawRect(backgroundRect);
+}
+
+void GameView::mousePressEvent(QMouseEvent *event)
+{
+    if (event->pos().x() > -140 + POSITIONSCALE && event->pos().x() < 140 + POSITIONSCALE) //Make sure the ball is inside the testtube. 140 are magic numbers that must be changed if you change the size of the walls.
+    {
+        if (dropEnabled)
+        {
+            dropEnabled=false; //Make it so the user has to wait before sending the next circle.
+            QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
+            emit RequestMakeCircleBody(event->pos().x() -POSITIONSCALE , -POSITIONSCALE, 10.0f);
+        }
+    }
 }

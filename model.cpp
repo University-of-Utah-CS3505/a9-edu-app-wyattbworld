@@ -13,37 +13,13 @@ Model::Model(QObject *parent)
             this,
             &Model::UpdateView);
 
-    // Make a circle body
-//    b2BodyDef circleDef;
-//    circleDef.type = b2_dynamicBody;
-//    circleDef.position.Set(50.0f, 20.0f);
-//    b2Body* circle = world.CreateBody(&circleDef);
-//    b2CircleShape circleShape;
-//    circleShape.m_radius = 2.0f;
-//    circle->CreateFixture(&circleShape, 0.0f);
 
-//    b2BodyDef floorDef;
-//    floorDef.type = b2_staticBody;
-//    floorDef.position.Set(0.0f, 0.0f);
-//    b2Body* floor = world.CreateBody(&floorDef);
-//    b2PolygonShape floorShape;
-//    floorShape.SetAsBox(50.0f, 10.0f);
-//    floor->CreateFixture(&floorShape, 0.0f);
-
-//    bodies.push_back(circle);
-//    bodies.push_back(floor);
-
-//        // Define the gravity vector.
-//        b2Vec2 gravity(0.0f, -10.0f);
-
-//        // Construct a world object, which will hold and simulate the rigid bodies.
-//        b2World world(gravity);
 
         // Define the ground body.
         b2BodyDef groundBodyDef;
 
         // Set up the ground position. 90 seems to match the gameview's ground
-        groundBodyDef.position.Set(0.0f, 90.0f);
+        groundBodyDef.position.Set(0.0f, 100.0f);
 
         // Call the body factory which allocates memory for the ground body
         // from a pool and creates the ground box shape (also from a pool).
@@ -52,34 +28,25 @@ Model::Model(QObject *parent)
         // Define the ground box shape.
         b2PolygonShape groundBox;
         // The extents are the half-widths of the box.
-        groundBox.SetAsBox(500.0f, 10.0f);
+        groundBox.SetAsBox(500.0f, 2.0f);
         // Add the ground fixture to the ground body.
         groundBody->CreateFixture(&groundBox, 0.0f);
 
-        // Define the dynamic body. We set its position and call the body factory.
-        b2BodyDef bodyDef;
-        bodyDef.type = b2_dynamicBody;
+        b2BodyDef leftWallBodyDef;
+        leftWallBodyDef.position.Set(-150.0f, -100.0f);
+        b2Body* leftWallBody = world.CreateBody(&leftWallBodyDef);
+        b2PolygonShape leftWallBox;
+        leftWallBox.SetAsBox(2.0f, 500.0f);
+        leftWallBody->CreateFixture(&leftWallBox, 0.0f);
 
-        // Set up the initial position of the body
-        bodyDef.position.Set(0.0f, 0.0f);
+        b2BodyDef rightWallBodyDef;
+        rightWallBodyDef.position.Set(150.0f, -100.0f);
+        b2Body* rightWallBody = world.CreateBody(&rightWallBodyDef);
+        b2PolygonShape rightWallBox;
+        rightWallBox.SetAsBox(2.0f, 500.0f);
+        rightWallBody->CreateFixture(&rightWallBox, 0.0f);
 
-        b2Body* body = world.CreateBody(&bodyDef);
-        // Define another box shape for our dynamic body.
-        b2PolygonShape dynamicBox;
-        dynamicBox.SetAsBox(1.0f, 1.0f);
-        // Define the dynamic body fixture.
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = &dynamicBox;
-
-        fixtureDef.density = 1.0f;
-        fixtureDef.friction = 0.3f;
-        // Restitution sets up bounciness.
-        fixtureDef.restitution = 1.0f;
-
-        // Add the shape to the body.
-        body->CreateFixture(&fixtureDef);
-
-        bodies.push_back(body);
+        // Unsure if we need to add ground to bodies
         bodies.push_back(groundBody);
 
         // Create a repository for all potential Atoms in the game.
@@ -87,28 +54,38 @@ Model::Model(QObject *parent)
         {
             elementList.push_back(new Atom (nullptr, i-1));
         }
+        bodies.push_back(leftWallBody);
+        bodies.push_back(rightWallBody);
 }
 
+void Model::MakeCircleBody(float x, float y, float radius)
+{
+        b2BodyDef circleDef;
+        circleDef.type = b2_dynamicBody;
+        circleDef.position.Set(x, y);
+        b2Body* circleBody = world.CreateBody(&circleDef);
+
+        b2CircleShape circleShape;
+        circleShape.m_radius = radius;
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &circleShape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+        fixtureDef.restitution = 0.9f;
+        circleBody->CreateFixture(&fixtureDef);
+        bodies.push_back(circleBody);
+        emit SendBodies(bodies);
+}
 void Model::BeginGame()
 {
-//   // This is our little game loop.
-//    for (int32 i = 0; i < 60; ++i)
-//    {
-//        // Instruct the world to perform a single step of simulation.
-//        // It is generally best to keep the time step and iterations fixed.
-//        world.Step(timeStep, velocityIterations, positionIterations);
-//        b2Vec2 position = bodies[0]->GetPosition();
-//        qDebug() << "m position: " << position.x << " " << position.y;
-//        emit UpdateWorld();
-//    }
     timer->start(1000/60);
+    emit SendStartGame();
 }
 
 void Model::UpdateView()
 {
     world.Step(timeStep, velocityIterations, positionIterations);
-    b2Vec2 position = bodies[0]->GetPosition();
-    qDebug() << "position: " << position.x << " " << position.y;
     emit UpdateWorld();
 }
 

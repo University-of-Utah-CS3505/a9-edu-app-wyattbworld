@@ -8,12 +8,12 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(&model,
+    connect (&model,
             &Model::UpdateWorld,
             ui->gameView,
             &GameView::ReceiveUpdateRequest);
 
-    connect(&model,
+    connect (&model,
             &Model::SendBodies,
             ui->gameView,
             &GameView::ReceiveBodies);
@@ -23,8 +23,15 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &model,
             &Model::SendBodiesTemp);
 
+    connect (ui->gameView,
+            &GameView::RequestMakeCircleBody,
+            &model,
+            &Model::MakeCircleBody);
 
-
+    connect (&model,
+            &Model::SendStartGame,
+            ui->gameView,
+            &GameView::ReceiveStartGame);
 }
 
 MainWindow::~MainWindow()
