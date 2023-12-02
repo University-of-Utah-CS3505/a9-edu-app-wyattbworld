@@ -32,7 +32,7 @@ public:
 
 
 private:
-    int logbase;
+    const int logbase = std::exp(1.0);
 
 signals:
     ///

@@ -10,7 +10,6 @@ Atom::Atom(QObject *parent,
            int protonCount)
     : QObject{parent}
 {
-    logbase = std::exp(1.0);
     atomicNumber = protonCount;
     elementNotation = NOTATIONLIST[atomicNumber-1];
     radius = log2(atomicNumber)/log2(logbase);
