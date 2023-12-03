@@ -33,17 +33,17 @@ Model::Model(QObject *parent)
         groundBody->CreateFixture(&groundBox, 0.0f);
 
         b2BodyDef leftWallBodyDef;
-        leftWallBodyDef.position.Set(-150.0f, -100.0f);
+        leftWallBodyDef.position.Set(-175.0f, 100.0f);
         b2Body* leftWallBody = world.CreateBody(&leftWallBodyDef);
         b2PolygonShape leftWallBox;
-        leftWallBox.SetAsBox(2.0f, 500.0f);
+        leftWallBox.SetAsBox(2.0f, 800.0f);
         leftWallBody->CreateFixture(&leftWallBox, 0.0f);
 
         b2BodyDef rightWallBodyDef;
-        rightWallBodyDef.position.Set(150.0f, -100.0f);
+        rightWallBodyDef.position.Set(175.0f, 100.0f);
         b2Body* rightWallBody = world.CreateBody(&rightWallBodyDef);
         b2PolygonShape rightWallBox;
-        rightWallBox.SetAsBox(2.0f, 500.0f);
+        rightWallBox.SetAsBox(2.0f, 800.0f);
         rightWallBody->CreateFixture(&rightWallBox, 0.0f);
 
         // Unsure if we need to add ground to bodies
@@ -93,6 +93,30 @@ void Model::SendBodiesTemp()
 {
     emit SendBodies(bodies);
     BeginGame();
+}
+
+void Model::RecieveCheckForGameOver()
+{
+    for (unsigned int i = 3; i < bodies.size(); i++)
+    {
+            if (bodies[i]->GetPosition().y < bodies[1]->GetPosition().y - 400 && //This checks if the ball is above the red line.
+                bodies[i]->GetLinearVelocity().y < 0) //This checks if the velocity is negative, it is it means the ball bounced on something which means it is not dropping from the top of the screen.
+            {
+                GameOver();
+            }
+    }
+}
+
+void Model::GameOver()
+{
+    for (unsigned int i = 3; i < bodies.size(); i++) //This behavior is temporary and we can change it to whatever we need later.
+    {
+        world.DestroyBody(bodies[i]);
+    }
+
+    vector<b2Body*> temp {bodies[0], bodies[1], bodies[2]};
+    bodies = temp;
+    emit SendBodiesTemp();
 }
 
 // Box2D code from lab14

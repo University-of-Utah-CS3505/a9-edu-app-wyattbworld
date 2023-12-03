@@ -34,7 +34,8 @@ public:
 private:
     Ui::GameView *ui;
     void paintEvent(QPaintEvent *event);
-    const int POSITIONSCALE = 200;
+    const int POSITIONSCALEX = 175;
+    const int POSITIONSCALEY = 350;
     void mousePressEvent(QMouseEvent *event);
     const int CIRCLEDROPTIME = 500; //The minimum interval of time (in milliseconds) that the user can drop circles.
     bool dropEnabled; //Determines whether the user is allowed to drop elements into the jar.
@@ -48,6 +49,7 @@ public slots:
 
 signals:
     void RequestMakeCircleBody(float, float, float);
+    void RequestCheckForGameOver(); //This signal is sent to the model to tell it to check if the game is over.
 };
 
 #endif // GAMEVIEW_H

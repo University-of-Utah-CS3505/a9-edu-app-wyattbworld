@@ -28,10 +28,13 @@ private:
     QTimer* timer;
     QVector<Atom*> elementList;
 
+    void GameOver(); //Activates the game over sequence.
+
 public slots:
     void SendBodiesTemp();
     void UpdateView();
     void MakeCircleBody(float x, float y, float radius);
+    void RecieveCheckForGameOver(); //Receives a request to check if the game is over.
 
 signals:
     void UpdateWorld();
