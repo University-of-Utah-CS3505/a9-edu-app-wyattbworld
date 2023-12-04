@@ -7,6 +7,7 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->elementInfo->hide();
 
     connect (&model,
             &Model::UpdateWorld,
@@ -17,7 +18,7 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &Model::SendBodies,
             ui->gameView,
             &GameView::ReceiveBodies);
-    
+
     connect (ui->startButton,
             &QPushButton::clicked,
             &model,
@@ -33,16 +34,51 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             ui->gameView,
             &GameView::ReceiveStartGame);
 
-    //here is an example of what the element popup will look like, obviously not implemented correctly yet
-//    ui->elementDescription->setTitleContent("01Hydrogen");
-//    ui->elementDescription->setAssetContent("01Hydrogen");
-//    ui->elementDescription->setImageContent("01Hydrogen");
-//    ui->elementDescription->setKeyProperties("01Hydrogen");
-//    ui->elementDescription->show();
+    connect (ui->gameView,
+            &GameView::RequestCheckForGameOver,
+            &model,
+            &Model::RecieveCheckForGameOver);
+
+    connect (&model,
+            &Model::SendAtomList,
+            ui->gameView,
+            &GameView::ReceiveAtomList);
+
+    connect (ui->gameView,
+            &GameView::RequestElementStatus,
+            &model,
+            &Model::SendElementStatus);
+
+    connect (&model,
+            &Model::RequestDisplayElementInfo,
+            ui->elementInfo,
+            &ElementInfo::SetElementInfo);
+
+    connect (ui->elementInfo,
+            &ElementInfo::RequestDisplayElementInfo,
+            this,
+            &MainWindow::DisplayElementInfo);
+
+    connect (ui->elementInfo,
+            &ElementInfo::closeElement,
+            this,
+            &MainWindow::HideElementInfo);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::DisplayElementInfo(){
+    ui->elementInfo->show();
+}
+
+void MainWindow::HideElementInfo(){
+    ui->elementInfo->hide();
+}
+
+
+
 

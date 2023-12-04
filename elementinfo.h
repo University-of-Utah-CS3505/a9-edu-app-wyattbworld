@@ -17,14 +17,20 @@ public:
     explicit ElementInfo(QWidget *parent = nullptr);
     ~ElementInfo();
 
-    void setTitleContent(const QString &text);
-    void setAssetContent(const QString &text);
-    void setImageContent(const QString &text);
-    void setKeyProperties(const QString &text);
+    void SetAssetContent(const QString &text);
+    void SetImageContent(const QString &text);
+    void SetKeyProperties(const QString &text);
 
 private:
     Ui::ElementInfo *ui;
     QMap<QString, QList<QString>> elementDescriptions;
+
+public slots:
+    void SetElementInfo(QString element);
+    void ExitElement();
+signals:
+    void RequestDisplayElementInfo();
+    void closeElement();
 };
 
 #endif // ELEMENTINFO_H

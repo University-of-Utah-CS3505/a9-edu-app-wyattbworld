@@ -131,4 +131,4 @@ DISTFILES += \
     Box2D/CMakeLists.txt
 
 RESOURCES += \
-    elementAssets.qrc
+    elementImages.qrc

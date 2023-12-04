@@ -1,10 +1,11 @@
 #ifndef ATOM_H
 #define ATOM_H
 
+#include "qpixmap.h"
 #include <QObject>
 #include <QString>
-#include <vector>
 #include <math.h>
+#include <QImage>
 
 class Atom : public QObject
 {
@@ -29,10 +30,11 @@ public:
     int atomicNumber;                   // The number of protons in this Atom.
     QString elementNotation;            // This Atom's chemical notation.
     float radius;
+    QPixmap atomBody;
 
 
 private:
-    const int logbase = std::exp(1.0);
+    const int LOGBASE = std::exp(1.0);
 
 signals:
     ///

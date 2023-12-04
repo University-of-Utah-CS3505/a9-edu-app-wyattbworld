@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/new/prefix1">
-        <file>images/01Hydrogen.png</file>
-        <file>images/01HydrogenImage.jpg</file>
-    </qresource>
-</RCC>

@@ -1,10 +1,11 @@
 #include "atom.h"
+#include "qpixmap.h"
 
 // All of the first 54 elements from Hydrogen to Xenon.
 const std::vector<QString> Atom::NOTATIONLIST = {"H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
-                                                        "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar",
-                                                        "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr",
-                                                        "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe"};
+                                                 "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar",
+                                                 "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr",
+                                                 "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe"};
 
 Atom::Atom(QObject *parent,
            int protonCount)
@@ -12,7 +13,7 @@ Atom::Atom(QObject *parent,
 {
     atomicNumber = protonCount;
     elementNotation = NOTATIONLIST[atomicNumber-1];
-    radius = log2(atomicNumber)/log2(logbase);
+    radius = atomicNumber*3;
 
     // Elements with protons in multiples of 8 plus 2 are inert and do not combine with other atoms.
     if (atomicNumber - 2 == 0 || (atomicNumber - 2) % 8 == 0)
@@ -25,6 +26,9 @@ Atom::Atom(QObject *parent,
         isInert = true;
         isCatalyst = true;
     }
+    atomBody = QPixmap("://Elements//Elements/"+ elementNotation + ".png");
+    QSize size(radius*2, radius*2);
+    atomBody = atomBody.scaled(size);
 }
 
 void Atom::Split()
