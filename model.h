@@ -35,11 +35,16 @@ public slots:
     void UpdateView();
     void MakeCircleBody(float x, float y, float radius);
     void RecieveCheckForGameOver(); //Receives a request to check if the game is over.
+    void QuitGame();
 
 signals:
     void UpdateWorld();
     void SendBodies(vector<b2Body*> &bodies);
     void SendStartGame();
+    void SetStartButtonVisibility(bool);
+    void SetQuitButtonVisibility(bool);
+    void SetGameViewVisibility(bool);
+    void SetGameOverLabelVisibility(bool);
 };
 
 #endif // MODEL_H

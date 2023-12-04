@@ -7,6 +7,7 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->gameOverLabel->setVisible(false);
 
     connect (&model,
             &Model::UpdateWorld,
@@ -37,6 +38,32 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &GameView::RequestCheckForGameOver,
             &model,
             &Model::RecieveCheckForGameOver);
+
+    connect (&model,
+            &Model::SetStartButtonVisibility,
+            ui->startButton,
+            &QPushButton::setVisible);
+
+    connect (ui->quitButton,
+            &QPushButton::clicked,
+            &model,
+            &Model::QuitGame);
+
+    connect (&model,
+            &Model::SetQuitButtonVisibility,
+            ui->quitButton,
+            &QPushButton::setVisible);
+
+    connect (&model,
+            &Model::SetGameViewVisibility,
+            ui->gameView,
+            &GameView::setVisible);
+
+    connect (&model,
+            &Model::SetGameOverLabelVisibility,
+            ui->gameOverLabel,
+            &QLabel::setVisible);
+
 }
 
 MainWindow::~MainWindow()
