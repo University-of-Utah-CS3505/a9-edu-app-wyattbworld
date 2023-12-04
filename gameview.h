@@ -57,6 +57,7 @@ signals:
     void RequestMakeCircleBody(float, float, float);
     void RequestCheckForGameOver(); //This signal is sent to the model to tell it to check if the game is over.
     void RequestElementStatus(QString name);
+    void ChangeElementStatus(QString name);
 };
 
 #endif // GAMEVIEW_H

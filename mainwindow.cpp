@@ -49,6 +49,11 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &model,
             &Model::SendElementStatus);
 
+    connect (ui->gameView,
+           &GameView::ChangeElementStatus,
+           &model,
+           &Model::UpdateElementStatus);
+
     connect (&model,
             &Model::RequestDisplayElementInfo,
             ui->elementInfo,
@@ -63,6 +68,7 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &ElementInfo::closeElement,
             this,
             &MainWindow::HideElementInfo);
+
 
 }
 

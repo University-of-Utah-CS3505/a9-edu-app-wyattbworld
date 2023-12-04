@@ -38,6 +38,7 @@ public slots:
     void MakeCircleBody(float x, float y, float radius);
     void RecieveCheckForGameOver(); //Receives a request to check if the game is over.
     void SendElementStatus(QString element);
+    void UpdateElementStatus(QString element);
 
 signals:
     void UpdateWorld();

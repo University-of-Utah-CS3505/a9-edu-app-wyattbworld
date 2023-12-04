@@ -96,6 +96,7 @@ void GameView::mousePressEvent(QMouseEvent *event)
             QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
 
             emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, atom->radius);
+            emit ChangeElementStatus(atom->elementNotation);
         }
     }
 }

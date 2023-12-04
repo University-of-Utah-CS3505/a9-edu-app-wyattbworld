@@ -106,6 +106,10 @@ void Model::SendElementStatus(QString element){
     }
 }
 
+void Model::UpdateElementStatus(QString element){
+    elementStatus[element] = true;
+}
+
 void Model::RecieveCheckForGameOver()
 {
     for (unsigned int i = 3; i < bodies.size(); i++)
