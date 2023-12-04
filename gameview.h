@@ -8,6 +8,9 @@
 #include <QColor>
 #include <QRect>
 #include <QMouseEvent>
+#include <atom.h>
+#include <QRandomGenerator>
+#include <QtMath>
 
 #include <Box2D/Box2D.h>
 #include <stdio.h>
@@ -32,6 +35,7 @@ public:
     ~GameView();
 
 private:
+    QRandomGenerator* generator;
     Ui::GameView *ui;
     void paintEvent(QPaintEvent *event);
     const int POSITIONSCALEX = 175;
@@ -41,9 +45,11 @@ private:
     bool dropEnabled; //Determines whether the user is allowed to drop elements into the jar.
     QPoint ModelToGameView(b2Vec2 coord);
     b2Vec2 GameViewToModel(QPoint coord);
+    QVector<Atom*> atomList;
 
 public slots:
     void ReceiveStartGame();
+    void ReceiveAtomList(QVector<Atom*>);
     void ReceiveUpdateRequest();
     void ReceiveBodies(vector<b2Body*> &sentBodies);
 

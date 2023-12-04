@@ -37,6 +37,11 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &GameView::RequestCheckForGameOver,
             &model,
             &Model::RecieveCheckForGameOver);
+
+    connect (&model,
+            &Model::SendAtomList,
+            ui->gameView,
+            &GameView::ReceiveAtomList);
 }
 
 MainWindow::~MainWindow()

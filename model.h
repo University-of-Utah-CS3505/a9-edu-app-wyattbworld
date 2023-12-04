@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <QTimer>
 #include <atom.h>
-#include <Qvector>
 
 using std::vector;
 
@@ -40,6 +39,7 @@ signals:
     void UpdateWorld();
     void SendBodies(vector<b2Body*> &bodies);
     void SendStartGame();
+    void SendAtomList(QVector<Atom*>);
 };
 
 #endif // MODEL_H

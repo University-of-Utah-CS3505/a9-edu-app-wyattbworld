@@ -12,6 +12,7 @@ GameView::GameView(QWidget *parent) :
 
     ui->setupUi(this);
     dropEnabled = false;
+    generator = QRandomGenerator::global();
 }
 
 GameView::~GameView()
@@ -22,6 +23,11 @@ GameView::~GameView()
 void GameView::ReceiveBodies(vector<b2Body*> &sentBodies)
 {
     bodies = sentBodies;
+}
+
+void GameView::ReceiveAtomList(QVector<Atom*> elements)
+{
+    atomList = elements;
 }
 
 void GameView::ReceiveStartGame()
@@ -63,7 +69,8 @@ void GameView::paintEvent(QPaintEvent *)
             int radius = bodies[i]->GetFixtureList()->GetShape()->m_radius;
             QPoint center(position.x(), position.y());
 
-            painter.drawEllipse(center, radius, radius);
+            // painter.drawEllipse(center, radius, radius);
+            painter.drawPixmap(center.x()-radius, center.y()-radius, atomList[radius/3-1]->atomBody);
         }
 
         emit RequestCheckForGameOver();
@@ -82,7 +89,8 @@ void GameView::mousePressEvent(QMouseEvent *event)
         {
             dropEnabled=false; //Make it so the user has to wait before sending the next circle.
             QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
-            emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, 50.0f);
+
+            emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, atomList[generator->bounded(10)]->radius);
         }
     }
 }
