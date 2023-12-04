@@ -1,5 +1,58 @@
 <RCC>
-    <qresource prefix="/elements">
-        <file>images/HImage.jpg</file>
+    <qresource prefix="/elementImages">
+        <file>elementImages/AgImage.jpg</file>
+        <file>elementImages/AlImage.jpg</file>
+        <file>elementImages/ArImage.jpg</file>
+        <file>elementImages/AsImage.jpg</file>
+        <file>elementImages/BeImage.jpg</file>
+        <file>elementImages/BImage.jpg</file>
+        <file>elementImages/BrImage.jpg</file>
+        <file>elementImages/CaImage.jpg</file>
+        <file>elementImages/CdImage.jpg</file>
+        <file>elementImages/CImage.jpg</file>
+        <file>elementImages/ClImage.jpg</file>
+        <file>elementImages/CoImage.jpg</file>
+        <file>elementImages/CrImage.jpg</file>
+        <file>elementImages/CuImage.jpg</file>
+        <file>elementImages/FeImage.jpg</file>
+        <file>elementImages/FImage.jpg</file>
+        <file>elementImages/GaImage.jpg</file>
+        <file>elementImages/GeImage.jpg</file>
+        <file>elementImages/HeImage.jpg</file>
+        <file>elementImages/HImage.jpg</file>
+        <file>elementImages/IImage.jpg</file>
+        <file>elementImages/InImage.jpg</file>
+        <file>elementImages/KImage.jpg</file>
+        <file>elementImages/KrImage.jpg</file>
+        <file>elementImages/LiImage.jpg</file>
+        <file>elementImages/MgImage.jpg</file>
+        <file>elementImages/MnImage.jpg</file>
+        <file>elementImages/MoImage.jpg</file>
+        <file>elementImages/NaImage.jpg</file>
+        <file>elementImages/NbImage.jpg</file>
+        <file>elementImages/NeImage.jpg</file>
+        <file>elementImages/NiImage.jpg</file>
+        <file>elementImages/NImage.jpg</file>
+        <file>elementImages/OImage.jpg</file>
+        <file>elementImages/PdImage.jpg</file>
+        <file>elementImages/PImage.jpg</file>
+        <file>elementImages/RbImage.jpg</file>
+        <file>elementImages/RhImage.jpg</file>
+        <file>elementImages/RuImage.jpg</file>
+        <file>elementImages/SbImage.jpg</file>
+        <file>elementImages/ScImage.jpg</file>
+        <file>elementImages/SeImage.jpg</file>
+        <file>elementImages/SiImage.jpg</file>
+        <file>elementImages/SImage.jpg</file>
+        <file>elementImages/SnImage.jpg</file>
+        <file>elementImages/SrImage.jpg</file>
+        <file>elementImages/TcImage.jpg</file>
+        <file>elementImages/TeImage.jpg</file>
+        <file>elementImages/TiImage.jpg</file>
+        <file>elementImages/VImage.jpg</file>
+        <file>elementImages/XeImage.jpg</file>
+        <file>elementImages/YImage.jpg</file>
+        <file>elementImages/ZnImage.jpg</file>
+        <file>elementImages/ZrImage.jpg</file>
     </qresource>
 </RCC>

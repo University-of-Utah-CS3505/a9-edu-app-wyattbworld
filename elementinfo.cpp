@@ -1,5 +1,6 @@
 #include "elementinfo.h"
 #include "ui_elementinfo.h"
+#include <QDebug>
 
 //note this is not model-view yet, just trying to get it somewhat set up
 ElementInfo::ElementInfo(QWidget *parent) :
@@ -65,7 +66,7 @@ ElementInfo::ElementInfo(QWidget *parent) :
     elementDescriptions["Sb"] = {"Antimony (Sb)", "Atomic number : 51 \nGroup: P-Block \nPhase @STP : Solid", "Antimony was recognized in ancient times and has been known as a metal since at least the 17th century. Antimony is widespread and found in more than 100 minerals, most frequently in the form of sulfide stibnite."};
     elementDescriptions["Te"] = {"Tellerium (Te)", "Atomic number : 52  \nGroup: P-Block \nPhase @STP : Solid", "Discovered in 1782 and isolated in 1798, tellurium in its crystalline form is brittle and silvery-white with a metallic luster."};
     elementDescriptions["I"] = {"Iodine (I)", "Atomic number : 53  \nGroup: P-Block \nPhase @STP : Solid", "A bluish-black and lustrous solid, iodine at ambient temperatures turns into a blue-violet gas with a distinct odor. It forms compounds, but is less reactive than other halogens. Iodine has some metallic properties, is slightly water-soluble, and forms a purple solution when dissolved in chloroform, carbon tetrachloride, or carbon disulfide."};
-    elementDescriptions["Xe"] = {"Xenon (Xe)", "Atomic number : 54  \nGroup: Noble Gas  \nPhase @STP : Gas", "Discovered in 1898, xenon is a noble or "inert" gas. It is present in the atmospheres of Earth and Mars and in gases from certain mineral springs."};
+    elementDescriptions["Xe"] = {"Xenon (Xe)", "Atomic number : 54  \nGroup: Noble Gas  \nPhase @STP : Gas", "Discovered in 1898, xenon is a noble or inert gas. It is present in the atmospheres of Earth and Mars and in gases from certain mineral springs."};
 
 
     connect(ui->exitButton,
@@ -112,7 +113,10 @@ void ElementInfo::SetAssetContent(const QString &element)
 void ElementInfo::SetImageContent(const QString &element)
 {
 
-    QImage image(":/elements/images/"+element+"Image.jpg");
+    QImage image(":/elementImages/elementImages/"+element+"Image.jpg");
+    if (image.isNull()) {
+        qDebug() << "Error loading element image";
+    }
     //make the image the same size as the label
     QSize size(ui->elementImage->width(), ui->elementImage->height());
     QImage resizedImage = image.scaled(size, Qt::KeepAspectRatio);
