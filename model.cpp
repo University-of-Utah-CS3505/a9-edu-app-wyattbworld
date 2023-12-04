@@ -13,7 +13,8 @@ Model::Model(QObject *parent)
             this,
             &Model::UpdateView);
 
-
+    // set world contact listener
+    world.SetContactListener(&contactListener);
 
         // Define the ground body.
         b2BodyDef groundBodyDef;
@@ -117,6 +118,18 @@ void Model::GameOver()
     vector<b2Body*> temp {bodies[0], bodies[1], bodies[2]};
     bodies = temp;
     emit SendBodiesTemp();
+}
+
+void Model::HandleCollision(b2Body* bodyA, b2Body* bodyB)
+{
+    qDebug() << bodyA->GetMass() << ", " << bodyB->GetMass();
+}
+
+void Model::JoinObjects(b2Body* bodyA, b2Body* bodyB)
+{
+    b2JointDef jointDef;
+    jointDef.bodyA = bodyA;
+
 }
 
 // Box2D code from lab14

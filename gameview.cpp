@@ -82,6 +82,13 @@ void GameView::mousePressEvent(QMouseEvent *event)
         {
             dropEnabled=false; //Make it so the user has to wait before sending the next circle.
             QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
+
+            // catalyst toggle check
+            if(dropCatalyst)
+            {
+
+            }
+
             emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, 50.0f);
         }
     }
@@ -95,4 +102,9 @@ QPoint GameView::ModelToGameView(b2Vec2 coord)
 b2Vec2 GameView::GameViewToModel(QPoint coord)
 {
     return b2Vec2(coord.x() - POSITIONSCALEX, coord.y() - POSITIONSCALEY);
+}
+
+void GameView::EnableCatalyst()
+{
+    dropCatalyst = true;
 }

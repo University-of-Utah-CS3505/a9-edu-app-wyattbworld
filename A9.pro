@@ -56,6 +56,8 @@ SOURCES += \
     Box2D/Dynamics/b2WorldCallbacks.cpp \
     Box2D/Rope/b2Rope.cpp \
     atom.cpp \
+    catalyst.cpp \
+    gamecontactlistener.cpp \
     gameview.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -110,6 +112,8 @@ HEADERS += \
     Box2D/Dynamics/b2WorldCallbacks.h \
     Box2D/Rope/b2Rope.h \
     atom.h \
+    catalyst.h \
+    gamecontactlistener.h \
     gameview.h \
     mainwindow.h \
     model.h

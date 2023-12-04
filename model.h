@@ -8,6 +8,8 @@
 #include <atom.h>
 #include <Qvector>
 
+#include "gamecontactlistener.h"
+
 using std::vector;
 
 class Model : public QObject
@@ -16,6 +18,7 @@ class Model : public QObject
 public:
     explicit Model(QObject *parent = nullptr);
     void BeginGame();
+    GameContactListener contactListener; // the instance of the contact listener used for the game
 
 private:
     b2World world;
@@ -35,6 +38,8 @@ public slots:
     void UpdateView();
     void MakeCircleBody(float x, float y, float radius);
     void RecieveCheckForGameOver(); //Receives a request to check if the game is over.
+    void HandleCollision(b2Body* bodyA, b2Body* bodyB); // handle the collisison signal
+    void JoinObjects(b2Body* bodyA, b2Body* bodyB); // creates a joint between the two bodies
 
 signals:
     void UpdateWorld();

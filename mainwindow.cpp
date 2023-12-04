@@ -37,6 +37,12 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &GameView::RequestCheckForGameOver,
             &model,
             &Model::RecieveCheckForGameOver);
+
+    // catalyst button
+    connect (ui->catalystButton,
+            &QPushButton::clicked,
+            ui->gameView,
+            &GameView::EnableCatalyst);
 }
 
 MainWindow::~MainWindow()

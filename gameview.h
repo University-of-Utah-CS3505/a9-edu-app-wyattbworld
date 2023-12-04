@@ -41,11 +41,13 @@ private:
     bool dropEnabled; //Determines whether the user is allowed to drop elements into the jar.
     QPoint ModelToGameView(b2Vec2 coord);
     b2Vec2 GameViewToModel(QPoint coord);
+    bool dropCatalyst; // the toggle for if current drop is a catalyst
 
 public slots:
     void ReceiveStartGame();
     void ReceiveUpdateRequest();
     void ReceiveBodies(vector<b2Body*> &sentBodies);
+    void EnableCatalyst(); // toggles the catalyst drop
 
 signals:
     void RequestMakeCircleBody(float, float, float);
