@@ -37,6 +37,16 @@
      <string>Start</string>
     </property>
    </widget>
+   <widget class="ElementInfo" name="elementDescription" native="true">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>40</y>
+      <width>400</width>
+      <height>300</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -55,6 +65,12 @@
    <class>GameView</class>
    <extends>QWidget</extends>
    <header>gameview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ElementInfo</class>
+   <extends>QWidget</extends>
+   <header>elementinfo.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

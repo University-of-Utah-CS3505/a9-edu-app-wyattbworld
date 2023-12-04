@@ -56,6 +56,7 @@ SOURCES += \
     Box2D/Dynamics/b2WorldCallbacks.cpp \
     Box2D/Rope/b2Rope.cpp \
     atom.cpp \
+    elementinfo.cpp \
     gameview.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -110,11 +111,13 @@ HEADERS += \
     Box2D/Dynamics/b2WorldCallbacks.h \
     Box2D/Rope/b2Rope.h \
     atom.h \
+    elementinfo.h \
     gameview.h \
     mainwindow.h \
     model.h
 
 FORMS += \
+    elementinfo.ui \
     gameview.ui \
     mainwindow.ui
 
@@ -126,3 +129,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     Box2D/Box2DConfig.cmake \
     Box2D/CMakeLists.txt
+
+RESOURCES += \
+    elementAssets.qrc

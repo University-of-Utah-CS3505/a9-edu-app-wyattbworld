@@ -32,6 +32,13 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &Model::SendStartGame,
             ui->gameView,
             &GameView::ReceiveStartGame);
+
+    //here is an example of what the element popup will look like, obviously not implemented correctly yet
+//    ui->elementDescription->setTitleContent("01Hydrogen");
+//    ui->elementDescription->setAssetContent("01Hydrogen");
+//    ui->elementDescription->setImageContent("01Hydrogen");
+//    ui->elementDescription->setKeyProperties("01Hydrogen");
+//    ui->elementDescription->show();
 }
 
 MainWindow::~MainWindow()
