@@ -61,22 +61,23 @@ Model::Model(QObject *parent)
 
 void Model::MakeCircleBody(float x, float y, float radius)
 {
-        b2BodyDef circleDef;
-        circleDef.type = b2_dynamicBody;
-        circleDef.position.Set(x, y);
-        b2Body* circleBody = world.CreateBody(&circleDef);
+    b2BodyDef circleDef;
+    circleDef.type = b2_dynamicBody;
+    circleDef.position.Set(x, y);
+    b2Body* circleBody = world.CreateBody(&circleDef);
+    circleBody->SetUserData(this);
 
-        b2CircleShape circleShape;
-        circleShape.m_radius = radius;
+    b2CircleShape circleShape;
+    circleShape.m_radius = radius;
 
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = &circleShape;
-        fixtureDef.density = 1.0f;
-        fixtureDef.friction = 0.3f;
-        fixtureDef.restitution = 0.9f;
-        circleBody->CreateFixture(&fixtureDef);
-        bodies.push_back(circleBody);
-        emit SendBodies(bodies);
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &circleShape;
+    fixtureDef.density = 1.0f;
+    fixtureDef.friction = 0.3f;
+    fixtureDef.restitution = 0.9f;
+    circleBody->CreateFixture(&fixtureDef);
+    bodies.push_back(circleBody);
+    emit SendBodies(bodies);
 }
 void Model::BeginGame()
 {
@@ -87,6 +88,12 @@ void Model::BeginGame()
 void Model::UpdateView()
 {
     world.Step(timeStep, velocityIterations, positionIterations);
+    // Call handleCollision
+    HandleCollision(contactListener.collidingBodies);
+    // Remove bodies when they collide
+    RemoveBodies();
+    // Add new bodies after old ones are removed
+//    AddBodies();
     emit UpdateWorld();
 }
 
@@ -117,19 +124,39 @@ void Model::GameOver()
 
     vector<b2Body*> temp {bodies[0], bodies[1], bodies[2]};
     bodies = temp;
-    emit SendBodiesTemp();
+    emit SendBodies(bodies);
 }
 
-void Model::HandleCollision(b2Body* bodyA, b2Body* bodyB)
+void Model::HandleCollision(map<b2Body*, b2Body*> collisions)
 {
-    qDebug() << bodyA->GetMass() << ", " << bodyB->GetMass();
+    for(auto& [bodyA, bodyB] : collisions) {
+        // Check atoms, see if valid combo. (this is where we consider catalysts and noble gasses
+        // Make a circle based on posA
+        MakeCircleBody(bodyA->GetPosition().x, bodyA->GetPosition().y, bodyA->GetFixtureList()->GetShape()->m_radius/2);
+        qDebug() << bodyA->GetMass() << ", " << bodyB->GetMass();
+    }
 }
 
-void Model::JoinObjects(b2Body* bodyA, b2Body* bodyB)
+void Model::RemoveBodies()
 {
-    b2JointDef jointDef;
-    jointDef.bodyA = bodyA;
+    for (auto& [bodyA, bodyB] : contactListener.collidingBodies){
+        // Remove bodyA from bodies and world
+        vector<b2Body*>::iterator it = std::find(bodies.begin(), bodies.end(), bodyA);
+        if(it != bodies.end()) {
+            bodies.erase(it);
+            world.DestroyBody(bodyA);
+        }
 
+        // Remove bodyB from bodies and world
+        it = std::find(bodies.begin(), bodies.end(), bodyB);
+        if(it != bodies.end()) {
+            bodies.erase(it);
+            world.DestroyBody(bodyB);
+        }
+    }
+
+    contactListener.collidingBodies.clear();
+    emit SendBodies(bodies);
 }
 
 // Box2D code from lab14

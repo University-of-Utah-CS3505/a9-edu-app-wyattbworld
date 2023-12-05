@@ -32,14 +32,14 @@ private:
     QVector<Atom*> elementList;
 
     void GameOver(); //Activates the game over sequence.
+    void RemoveBodies(); // Remove bodies that collided
 
 public slots:
     void SendBodiesTemp();
     void UpdateView();
     void MakeCircleBody(float x, float y, float radius);
     void RecieveCheckForGameOver(); //Receives a request to check if the game is over.
-    void HandleCollision(b2Body* bodyA, b2Body* bodyB); // handle the collisison signal
-    void JoinObjects(b2Body* bodyA, b2Body* bodyB); // creates a joint between the two bodies
+    void HandleCollision(map<b2Body*, b2Body*>); // handle the collisison signal
 
 signals:
     void UpdateWorld();

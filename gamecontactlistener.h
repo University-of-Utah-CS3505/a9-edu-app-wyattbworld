@@ -11,7 +11,7 @@ class GameContactListener : public b2ContactListener
 public:
     GameContactListener();
     void BeginContact(b2Contact* contact);
-    map<b2Body, b2Body> collidingBodies;
+    map<b2Body*, b2Body*> collidingBodies;
 };
 
 #endif // GAMECONTACTLISTENER_H
