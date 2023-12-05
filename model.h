@@ -32,7 +32,8 @@ private:
     QVector<Atom*> elementList;
 
     void GameOver(); //Activates the game over sequence.
-    void RemoveBodies(); // Remove bodies that collided
+    void RemoveBodies(b2Body* bodyA, b2Body* bodyB); // Remove bodies that collided
+    void joinBodies(b2Body* bodyA, b2Body* bodyB);
 
 public slots:
     void SendBodiesTemp();
