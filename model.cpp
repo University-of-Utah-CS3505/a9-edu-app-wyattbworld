@@ -1,6 +1,7 @@
 #include "model.h"
 #include <Box2D/Box2D.h>
 #include <stdio.h>
+#include <QApplication>
 #include <QDebug>
 
 Model::Model(QObject *parent)
@@ -84,6 +85,10 @@ void Model::MakeCircleBody(float x, float y, float radius)
 void Model::BeginGame()
 {
     timer->start(1000/60);
+    emit SetStartButtonVisibility(false);
+    emit SetQuitButtonVisibility(false);
+    emit SetGameViewVisibility(true);
+    emit SetGameOverLabelVisibility(false);
     emit SendStartGame();
     emit SendAtomList(elementList);
 }
@@ -131,7 +136,15 @@ void Model::GameOver()
 
     vector<b2Body*> temp {bodies[0], bodies[1], bodies[2]};
     bodies = temp;
-    emit SendBodiesTemp();
+    SendBodiesTemp();
+    emit SetGameOverLabelVisibility(true);
+    emit SetGameViewVisibility(false);
+    emit SetStartButtonVisibility(true);
+    emit SetQuitButtonVisibility(true);
+}
+
+void Model::QuitGame() {
+    QApplication::quit();
 }
 
 // Box2D code from lab14
