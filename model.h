@@ -1,4 +1,4 @@
-#ifndef MODEL_H
+    #ifndef MODEL_H
 #define MODEL_H
 
 #include <QObject>
@@ -8,6 +8,8 @@
 #include <atom.h>
 #include <QMap>
 
+#include "gamecontactlistener.h"
+
 using std::vector;
 
 class Model : public QObject
@@ -16,6 +18,7 @@ class Model : public QObject
 public:
     explicit Model(QObject *parent = nullptr);
     void BeginGame();
+    GameContactListener contactListener; // the instance of the contact listener used for the game
 
 private:
     b2World world;
@@ -31,6 +34,8 @@ private:
     QMap<QString, bool> elementStatus;
 
     void GameOver(); //Activates the game over sequence.
+    void RemoveBodies(b2Body* bodyA, b2Body* bodyB); // Remove bodies that collided
+    void joinBodies(b2Body* bodyA, b2Body* bodyB);
 
 public slots:
     void SendBodiesTemp();
@@ -40,6 +45,7 @@ public slots:
     void SendElementStatus(QString element);
     void UpdateElementStatus(QString element);
     void QuitGame();
+    void HandleCollision(map<b2Body*, b2Body*>); // handle the collisison signal
 
 signals:
     void UpdateWorld();
