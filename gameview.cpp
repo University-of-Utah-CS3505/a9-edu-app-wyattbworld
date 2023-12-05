@@ -86,7 +86,8 @@ void GameView::mousePressEvent(QMouseEvent *event)
             // catalyst toggle check
             if(dropCatalyst)
             {
-
+                emit RequestMakeCircleBody(GameViewToModel(event->pos()).x, GameViewToModel(QPoint(0, 0)).y, 30.0f);
+                dropCatalyst = false;
             }
 
             emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, 50.0f);
