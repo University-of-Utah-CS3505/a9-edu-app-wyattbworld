@@ -18,5 +18,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+public slots:
+    void DisplayElementInfo();
+    void HideElementInfo();
 };
 #endif // MAINWINDOW_H

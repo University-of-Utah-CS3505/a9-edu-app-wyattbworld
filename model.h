@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <QTimer>
 #include <atom.h>
+#include <QMap>
 
 using std::vector;
 
@@ -27,6 +28,8 @@ private:
     QTimer* timer;
     QVector<Atom*> elementList;
 
+    QMap<QString, bool> elementStatus;
+
     void GameOver(); //Activates the game over sequence.
 
 public slots:
@@ -34,12 +37,15 @@ public slots:
     void UpdateView();
     void MakeCircleBody(float x, float y, float radius);
     void RecieveCheckForGameOver(); //Receives a request to check if the game is over.
+    void SendElementStatus(QString element);
+    void UpdateElementStatus(QString element);
 
 signals:
     void UpdateWorld();
     void SendBodies(vector<b2Body*> &bodies);
     void SendStartGame();
     void SendAtomList(QVector<Atom*>);
+    void RequestDisplayElementInfo(QString element);
 };
 
 #endif // MODEL_H

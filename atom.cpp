@@ -3,9 +3,9 @@
 
 // All of the first 54 elements from Hydrogen to Xenon.
 const std::vector<QString> Atom::NOTATIONLIST = {"H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
-                                                        "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar",
-                                                        "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr",
-                                                        "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe"};
+                                                 "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar",
+                                                 "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr",
+                                                 "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe"};
 
 Atom::Atom(QObject *parent,
            int protonCount)

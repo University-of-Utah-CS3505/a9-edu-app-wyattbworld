@@ -42,15 +42,15 @@ void GameView::ReceiveUpdateRequest()
 
 void GameView::paintEvent(QPaintEvent *)
 {
-   QPainter painter(this);
+    QPainter painter(this);
 
     if (bodies.size() > 0){
-       painter.setPen(QPen(Qt::red, 1));
+        painter.setPen(QPen(Qt::red, 1));
 
-       painter.drawLine(QLine(0, 50, this->width(), 50 ));
-       painter.setPen(QPen(Qt::black, 3));
+        painter.drawLine(QLine(0, 50, this->width(), 50 ));
+        painter.setPen(QPen(Qt::black, 3));
 
-       QPoint position = ModelToGameView(bodies[0]->GetPosition());
+        QPoint position = ModelToGameView(bodies[0]->GetPosition());
 
         QRect rect(position.x() - 500, position.y() - 1, 1000, 2);
         painter.fillRect(rect, QColor(0,0,0,255));
@@ -88,9 +88,15 @@ void GameView::mousePressEvent(QMouseEvent *event)
         if (dropEnabled)
         {
             dropEnabled=false; //Make it so the user has to wait before sending the next circle.
+
+            //check if we need to display the element info (is it new?)
+            Atom* atom = atomList[generator->bounded(10)];
+            emit RequestElementStatus(atom->elementNotation);
+
             QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
 
-            emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, atomList[generator->bounded(10)]->radius);
+            emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, atom->radius);
+            emit ChangeElementStatus(atom->elementNotation);
         }
     }
 }
