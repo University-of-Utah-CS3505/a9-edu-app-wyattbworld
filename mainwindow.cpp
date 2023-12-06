@@ -8,7 +8,6 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
 {
     ui->setupUi(this);
     ui->elementInfo->hide();
-    ui->gameOverLabel->setVisible(false);
 
     connect (&model,
             &Model::UpdateWorld,
@@ -70,30 +69,6 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             this,
             &MainWindow::HideElementInfo);
 
-    connect(&model,
-            &Model::SetStartButtonVisibility,
-            ui->startButton,
-            &QPushButton::setVisible);
-
-    connect (ui->quitButton,
-            &QPushButton::clicked,
-            &model,
-            &Model::QuitGame);
-
-    connect (&model,
-            &Model::SetQuitButtonVisibility,
-            ui->quitButton,
-            &QPushButton::setVisible);
-
-    connect (&model,
-            &Model::SetGameViewVisibility,
-            ui->gameView,
-            &GameView::setVisible);
-
-    connect (&model,
-            &Model::SetGameOverLabelVisibility,
-            ui->gameOverLabel,
-            &QLabel::setVisible);
 
 }
 

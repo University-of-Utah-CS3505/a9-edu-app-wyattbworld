@@ -39,7 +39,6 @@ public slots:
     void RecieveCheckForGameOver(); //Receives a request to check if the game is over.
     void SendElementStatus(QString element);
     void UpdateElementStatus(QString element);
-    void QuitGame();
 
 signals:
     void UpdateWorld();
@@ -47,10 +46,6 @@ signals:
     void SendStartGame();
     void SendAtomList(QVector<Atom*>);
     void RequestDisplayElementInfo(QString element);
-    void SetStartButtonVisibility(bool);
-    void SetQuitButtonVisibility(bool);
-    void SetGameViewVisibility(bool);
-    void SetGameOverLabelVisibility(bool);
 };
 
 #endif // MODEL_H
