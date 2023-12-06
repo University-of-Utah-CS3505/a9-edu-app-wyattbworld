@@ -140,36 +140,42 @@ void Model::GameOver()
 void Model::HandleCollision(map<b2Body*, b2Body*> collisions)
 {
     for(auto& [bodyA, bodyB] : collisions) {
-        float radius = bodyA->GetFixtureList()->GetShape()->m_radius + bodyB->GetFixtureList()->GetShape()->m_radius;
-        if(radius/3-1 < 54)
+        float radiusA = bodyA->GetFixtureList()->GetShape()->m_radius;
+        float radiusB = bodyB->GetFixtureList()->GetShape()->m_radius;
+        float newRadius = radiusA + radiusB;
+
+        // check if one of them is a catalyst
+        bool p = (radiusA/3 >= 21 && radiusA/3 <= 30) || (radiusA/3 >= 39 && radiusA/3 <= 48);
+        bool q = (radiusB/3 >= 21 && radiusB/3 <= 30) || (radiusB/3 >= 39 && radiusB/3 <= 48);
+
+        if((!p && q) || (p && !q))
+        {
+            JoinBodies(bodyA, bodyB);
+
+        }
+
+
+        if(newRadius/3-1 < 54)
         {
             // Make a circle based on posA
-            MakeCircleBody(bodyA->GetPosition().x, bodyA->GetPosition().y, radius);
+            MakeCircleBody(bodyA->GetPosition().x, bodyA->GetPosition().y, newRadius);
             // Remove bodies when they collide
-            RemoveBodies(bodyA, bodyB);
+            RemoveBodies(bodyA);
+            RemoveBodies(bodyB);
 
             // check to see if element is new
-            SendElementStatus(elementList[radius/3-1]->elementNotation);
-            // or
-            //        joinBodies(bodyA, bodyB);
+            SendElementStatus(elementList[newRadius/3-1]->elementNotation);
         }
     }
 }
 
-void Model::RemoveBodies(b2Body* bodyA, b2Body* bodyB)
+void Model::RemoveBodies(b2Body* body)
 {
     // Remove bodyA from bodies and world
     vector<b2Body*>::iterator it = std::find(bodies.begin(), bodies.end(), bodyA);
     if(it != bodies.end()) {
         bodies.erase(it);
-        world.DestroyBody(bodyA);
-    }
-
-    // Remove bodyB from bodies and world
-    it = std::find(bodies.begin(), bodies.end(), bodyB);
-    if(it != bodies.end()) {
-        bodies.erase(it);
-        world.DestroyBody(bodyB);
+        world.DestroyBody(body);
     }
     contactListener.collidingBodies.clear();
     emit SendBodies(bodies);
@@ -177,13 +183,16 @@ void Model::RemoveBodies(b2Body* bodyA, b2Body* bodyB)
 
 void Model::JoinBodies(b2Body* bodyA, b2Body* bodyB)
 {
+    float radiusA = bodyA->GetFixtureList()->GetShape()->m_radius;
+    float radiusB = bodyB->GetFixtureList()->GetShape()->m_radius;
+
     // Create a joint, attaching bodies
     b2RopeJointDef jointDef;
     jointDef.bodyA = bodyA;
     jointDef.bodyB = bodyB;
     jointDef.localAnchorA = bodyA->GetLocalCenter();
     jointDef.localAnchorB = bodyB->GetLocalCenter();
-    jointDef.maxLength = 105.0f;
+    jointDef.maxLength = radiusA + radiusB + 5;
     jointDef.collideConnected = true;
     bodyA->GetWorld()->CreateJoint(&jointDef);
 }

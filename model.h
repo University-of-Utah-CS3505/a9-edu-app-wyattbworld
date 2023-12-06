@@ -36,7 +36,7 @@ private:
 
     void GameOver(); //Activates the game over sequence.
     void HandleCollision(map<b2Body*, b2Body*> collisions); // called in update to hanlde all current collissions
-    void RemoveBodies(b2Body* bodyA, b2Body* bodyB); // removes bodies from the world
+    void RemoveBodies(b2Body* body); // removes bodies from the world
     void JoinBodies(b2Body* bodyA, b2Body* bodyB); // creates joint for catalyst
 
 public slots:
