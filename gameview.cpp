@@ -70,6 +70,7 @@ void GameView::paintEvent(QPaintEvent *)
             QPoint center(position.x(), position.y());
 
             // painter.drawEllipse(center, radius, radius);
+
             painter.drawPixmap(center.x()-radius, center.y()-radius, atomList[radius/3-1]->atomBody);
         }
 
