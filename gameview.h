@@ -52,7 +52,6 @@ public slots:
     void ReceiveAtomList(QVector<Atom*>);
     void ReceiveUpdateRequest();
     void ReceiveBodies(vector<b2Body*> &sentBodies);
-    void EnableCatalyst(); // toggles the catalyst drop
 
 signals:
     void RequestMakeCircleBody(float, float, float);

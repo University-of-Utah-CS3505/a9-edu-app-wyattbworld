@@ -110,8 +110,3 @@ b2Vec2 GameView::GameViewToModel(QPoint coord)
 {
     return b2Vec2(coord.x() - POSITIONSCALEX, coord.y() - POSITIONSCALEY);
 }
-
-void GameView::EnableCatalyst()
-{
-    dropCatalyst = true;
-}
