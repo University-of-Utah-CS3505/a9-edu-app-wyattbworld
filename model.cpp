@@ -145,12 +145,37 @@ void Model::HandleCollision(map<b2Body*, b2Body*> collisions)
         float newRadius = radiusA + radiusB;
 
         // check if one of them is a catalyst
-        bool p = (radiusA/3 >= 21 && radiusA/3 <= 30) || (radiusA/3 >= 39 && radiusA/3 <= 48);
-        bool q = (radiusB/3 >= 21 && radiusB/3 <= 30) || (radiusB/3 >= 39 && radiusB/3 <= 48);
+        bool isACatalyst = (radiusA/3 >= 21 && radiusA/3 <= 30) || (radiusA/3 >= 39 && radiusA/3 <= 48);
+        bool isBCatalyst = (radiusB/3 >= 21 && radiusB/3 <= 30) || (radiusB/3 >= 39 && radiusB/3 <= 48);
 
-        if((!p && q) || (p && !q))
+        // accepts if only one is catalyst
+        if((!isACatalyst && isBCatalyst) || (isACatalyst && !isBCatalyst))
         {
+            // join the bodies and calculate the catalyst threshold
             JoinBodies(bodyA, bodyB);
+            int catalystThreshold;
+            if(isACatalyst)
+            {
+                catalystThreshold = radiusA/12;
+
+                vector<b2Joint*> joints;
+                while(bodyA->GetJointList()->next != nullptr)
+                {
+                    joints.push_back(bodyA->GetJointList()->joint);
+                }
+
+                if(joints.size() >= (unsigned)catalystThreshold)
+                {
+                    for(auto joint: joints)
+                    {
+                        RemoveBodies(joint->GetBodyA());
+                    }
+                }
+            }
+            else
+            {
+                catalystThreshold = radiusB/12;
+            }
 
         }
 
