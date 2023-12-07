@@ -112,6 +112,7 @@ void Model::SendElementStatus(QString element){
 
 void Model::UpdateElementStatus(QString element){
     elementStatus[element] = true;
+    emit RequestUpdateProgress(element);
 }
 
 void Model::RecieveCheckForGameOver()

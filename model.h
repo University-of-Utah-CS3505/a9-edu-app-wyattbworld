@@ -53,6 +53,7 @@ signals:
     void SendStartGame();
     void SendAtomList(QVector<Atom*>);
     void RequestDisplayElementInfo(QString element);
+    void RequestUpdateProgress(QString element);
 };
 
 #endif // MODEL_H

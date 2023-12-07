@@ -64,6 +64,10 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             this,
             &MainWindow::HideElementInfo);
 
+    connect (&model,
+            &Model::RequestUpdateProgress,
+            this,
+            &MainWindow::UpdateProgress);
 
 }
 
@@ -80,7 +84,7 @@ void MainWindow::HideElementInfo(){
     ui->elementInfo->hide();
 }
 
-void MainWindow::UpdateProgressBar(){
+void MainWindow::UpdateProgress(QString element){
     ui->progressBar->setValue(ui->progressBar->value() + 1);
 }
 

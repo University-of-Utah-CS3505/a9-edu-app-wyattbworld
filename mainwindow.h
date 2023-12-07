@@ -22,6 +22,6 @@ private:
 public slots:
     void DisplayElementInfo();
     void HideElementInfo();
-    void UpdateProgressBar();
+    void UpdateProgress(QString element);
 };
 #endif // MAINWINDOW_H
