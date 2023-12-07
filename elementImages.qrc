@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/elementImages">
+    <qresource prefix="/ElementImages">
         <file>elementImages/AgImage.jpg</file>
         <file>elementImages/AlImage.jpg</file>
         <file>elementImages/ArImage.jpg</file>

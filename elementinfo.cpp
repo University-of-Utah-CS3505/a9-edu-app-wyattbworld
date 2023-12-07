@@ -113,7 +113,7 @@ void ElementInfo::SetAssetContent(const QString &element)
 void ElementInfo::SetImageContent(const QString &element)
 {
 
-    QImage image(":/elementImages/elementImages/"+element+"Image.jpg");
+    QImage image(":/ElementImages/elementImages/"+element+"Image.jpg");
     if (image.isNull()) {
         qDebug() << "Error loading element image";
     }
