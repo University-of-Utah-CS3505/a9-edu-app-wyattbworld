@@ -4,7 +4,7 @@
 #include <QDebug>
 
 Model::Model(QObject *parent)
-    : QObject{parent}, world(b2World(b2Vec2(0.0f, 100.0f)))
+    : QObject{parent}, world(b2World(b2Vec2(0.0f, 1000.0f)))
 {
     // Timer setup
     timer = new QTimer(this);
@@ -148,40 +148,48 @@ void Model::HandleCollision(map<b2Body*, b2Body*> collisions)
         bool isACatalyst = (radiusA/3 >= 21 && radiusA/3 <= 30) || (radiusA/3 >= 39 && radiusA/3 <= 48);
         bool isBCatalyst = (radiusB/3 >= 21 && radiusB/3 <= 30) || (radiusB/3 >= 39 && radiusB/3 <= 48);
 
-        // accepts if only one is catalyst
+        // QString elementA = elementList[radiusA/3-1]->elementNotation;
+        // QString elementB = elementList[radiusB/3-1]->elementNotation;
+        // qDebug() << elementA << " is catalyst: "  << isACatalyst;
+        // qDebug() << elementB << " is catalyst: " << isBCatalyst;
+
+
+        // Prevents catalysts from reacting
         if((!isACatalyst && isBCatalyst) || (isACatalyst && !isBCatalyst))
         {
             // join the bodies and calculate the catalyst threshold
-            JoinBodies(bodyA, bodyB);
-            int catalystThreshold;
             if(isACatalyst)
             {
-                catalystThreshold = radiusA/12;
+                if(catalystJointCount.count(bodyB) == 0) {
+                    JoinBodies(bodyA, bodyB);
+                    Catalyze(bodyA, bodyB);
 
-                vector<b2Joint*> joints;
-                while(bodyA->GetJointList()->next != nullptr)
-                {
-                    joints.push_back(bodyA->GetJointList()->joint);
-                }
-
-                if(joints.size() >= (unsigned)catalystThreshold)
-                {
-                    for(auto joint: joints)
-                    {
-                        RemoveBodies(joint->GetBodyA());
-                    }
                 }
             }
             else
             {
-                catalystThreshold = radiusB/12;
+                if(catalystJointCount.count(bodyA) == 0) {
+                    JoinBodies(bodyB, bodyA);
+                    Catalyze(bodyB, bodyA);
+                }
+            }
+        }
+        else if(newRadius/3-1 < 54)
+        {
+            // If non catalyst has a joint, ignore it
+            if((isACatalyst && catalystJointCount.count(bodyB) >= 1)
+                || (isBCatalyst && catalystJointCount.count(bodyA) >= 1)) {
+                qDebug() << "ignore when joined";
+                return;
             }
 
-        }
+            // Two non catalysts collide and either one is joined, we don't want them to combine
+            bool bothNonCatalyst = !isACatalyst && !isBCatalyst;
+            bool eitherHaveJoints =  catalystJointCount.count(bodyB) >= 1 || catalystJointCount.count(bodyA) >= 1;
+            if(bothNonCatalyst && eitherHaveJoints) {
+                return;
+            }
 
-
-        if(newRadius/3-1 < 54)
-        {
             // Make a circle based on posA
             MakeCircleBody(bodyA->GetPosition().x, bodyA->GetPosition().y, newRadius);
             // Remove bodies when they collide
@@ -194,13 +202,44 @@ void Model::HandleCollision(map<b2Body*, b2Body*> collisions)
     }
 }
 
+void Model::Catalyze(b2Body* catalyst, b2Body* nonCatalyst)
+{
+    float radius = catalyst->GetFixtureList()->GetShape()->m_radius;
+    // int catalystThreshold = radius/12;
+
+    // qDebug() << "catalyst threshold: " << catalystThreshold;
+
+    // When reaction occurs
+    if(catalystJointCount[catalyst] >= 2)
+    {
+        qDebug() << "Removing catalyst";
+
+        // destroy joints
+        // b2JointEdge* current = catalyst->GetJointList()->next;
+        // while(current != nullptr) {
+        //     world.DestroyJoint(current->joint);
+        //     current = current->next;
+        // }
+
+        // Crashing inconsistenly when reaction occurs.
+
+        RemoveBodies(catalyst);
+        RemoveBodies(nonCatalyst);
+        // We are not deleting every joined noncatalyst, just the most recently joined.
+        // Thus the non removed noncatayst isn't removed from the jointCount.
+
+        // Can fix by changing jointCount to just hold joints (map of catalyst and vector of non catalysts)
+    }
+}
+
 void Model::RemoveBodies(b2Body* body)
 {
     // Remove bodyA from bodies and world
-    vector<b2Body*>::iterator it = std::find(bodies.begin(), bodies.end(), bodyA);
+    vector<b2Body*>::iterator it = std::find(bodies.begin(), bodies.end(), body);
     if(it != bodies.end()) {
         bodies.erase(it);
         world.DestroyBody(body);
+        catalystJointCount.erase(body);
     }
     contactListener.collidingBodies.clear();
     emit SendBodies(bodies);
@@ -220,4 +259,12 @@ void Model::JoinBodies(b2Body* bodyA, b2Body* bodyB)
     jointDef.maxLength = radiusA + radiusB + 5;
     jointDef.collideConnected = true;
     bodyA->GetWorld()->CreateJoint(&jointDef);
+
+    // Accumlate joint count
+    catalystJointCount[bodyA] += 1;
+    catalystJointCount[bodyB] += 1;
+
+    qDebug() << "catalyst joint count: " << catalystJointCount[bodyA];
+    qDebug() << "non catalyst joint count: " << catalystJointCount[bodyB];
+
 }

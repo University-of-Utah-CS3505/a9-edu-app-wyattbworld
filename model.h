@@ -21,23 +21,25 @@ public:
 
 private:
     b2World world;
-    vector<b2Body*> bodies;
     const float32 timeStep = 1.0f / 60.0f;
     const int32 velocityIterations = 6;
     const int32 positionIterations = 2;
 
-
     QTimer* timer;
-    QVector<Atom*> elementList;
-
-    QMap<QString, bool> elementStatus;
-
     GameContactListener contactListener;
+
+
+    vector<b2Body*> bodies;
+    QVector<Atom*> elementList;
+    QMap<QString, bool> elementStatus;
+    map<b2Body*, int> catalystJointCount;
+
 
     void GameOver(); //Activates the game over sequence.
     void HandleCollision(map<b2Body*, b2Body*> collisions); // called in update to hanlde all current collissions
     void RemoveBodies(b2Body* body); // removes bodies from the world
     void JoinBodies(b2Body* bodyA, b2Body* bodyB); // creates joint for catalyst
+    void Catalyze(b2Body* catalyst, b2Body* nonCatalyst); // handle catalyst
 
 public slots:
     void SendBodiesTemp();
