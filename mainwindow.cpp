@@ -86,6 +86,7 @@ void MainWindow::HideElementInfo(){
 
 void MainWindow::UpdateProgress(QString element){
     ui->progressBar->setValue(ui->progressBar->value() + 1);
+    ui->menuElements->addAction(element);
 }
 
 

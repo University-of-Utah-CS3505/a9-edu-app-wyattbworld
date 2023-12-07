@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1000</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,8 +40,8 @@
    <widget class="ElementInfo" name="elementInfo" native="true">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>30</y>
+      <x>570</x>
+      <y>100</y>
       <width>400</width>
       <height>300</height>
      </rect>
@@ -50,7 +50,7 @@
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>390</x>
       <y>60</y>
       <width>118</width>
       <height>23</height>
@@ -63,6 +63,22 @@
      <number>0</number>
     </property>
    </widget>
+  </widget>
+  <widget class="QMenuBar" name="menu">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuElements">
+    <property name="title">
+     <string>Elements</string>
+    </property>
+   </widget>
+   <addaction name="menuElements"/>
   </widget>
  </widget>
  <customwidgets>
