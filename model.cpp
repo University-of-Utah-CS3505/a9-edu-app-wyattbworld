@@ -106,6 +106,7 @@ void Model::SendBodiesTemp()
 void Model::SendElementStatus(QString element){
     if (!elementStatus[element]){
         emit RequestDisplayElementInfo(element);
+        UpdateElementStatus(element);
     }
 }
 

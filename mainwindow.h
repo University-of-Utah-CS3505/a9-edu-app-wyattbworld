@@ -22,5 +22,6 @@ private:
 public slots:
     void DisplayElementInfo();
     void HideElementInfo();
+    void UpdateProgressBar();
 };
 #endif // MAINWINDOW_H

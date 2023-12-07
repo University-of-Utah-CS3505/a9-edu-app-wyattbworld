@@ -49,11 +49,6 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &model,
             &Model::SendElementStatus);
 
-    connect (ui->gameView,
-           &GameView::ChangeElementStatus,
-           &model,
-           &Model::UpdateElementStatus);
-
     connect (&model,
             &Model::RequestDisplayElementInfo,
             ui->elementInfo,
@@ -83,6 +78,10 @@ void MainWindow::DisplayElementInfo(){
 
 void MainWindow::HideElementInfo(){
     ui->elementInfo->hide();
+}
+
+void MainWindow::UpdateProgressBar(){
+    ui->progressBar->setValue(ui->progressBar->value() + 1);
 }
 
 
