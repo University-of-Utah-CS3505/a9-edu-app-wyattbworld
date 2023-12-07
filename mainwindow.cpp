@@ -64,10 +64,21 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             this,
             &MainWindow::HideElementInfo);
 
+
     connect (&model,
             &Model::RequestUpdateProgress,
             this,
             &MainWindow::UpdateProgress);
+
+    connect (ui->menuElements,
+            &QMenu::aboutToShow,
+            this,
+            &MainWindow::ConnectElementActions);
+
+    connect(this,
+            &MainWindow::RequestDisplayElementInfo,
+            ui->elementInfo,
+            &ElementInfo::SetElementInfo);
 
 }
 
@@ -76,8 +87,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::ConnectElementActions(){
+    // Disconnect existing connections to avoid duplicates
+    QMenu *menu = qobject_cast<QMenu*>(sender());
+    //QObject::disconnect(sender(), nullptr, nullptr, nullptr);
+
+    for (QAction *action : menu->actions()) {
+        connect(action, &QAction::triggered, this, &MainWindow::DisplayElementFromMenu);
+    }
+}
+
 void MainWindow::DisplayElementInfo(){
     ui->elementInfo->show();
+}
+
+void MainWindow::DisplayElementFromMenu(){
+    QAction *action = qobject_cast<QAction*>(sender());
+    QString element = action->text();
+    emit RequestDisplayElementInfo(element);
 }
 
 void MainWindow::HideElementInfo(){

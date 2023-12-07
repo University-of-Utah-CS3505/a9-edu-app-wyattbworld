@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "model.h"
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,5 +24,10 @@ public slots:
     void DisplayElementInfo();
     void HideElementInfo();
     void UpdateProgress(QString element);
+    void DisplayElementFromMenu();
+    void ConnectElementActions();
+
+signals:
+    void RequestDisplayElementInfo(QString element);
 };
 #endif // MAINWINDOW_H
