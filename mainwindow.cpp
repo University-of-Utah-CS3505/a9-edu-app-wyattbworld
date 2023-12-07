@@ -9,6 +9,10 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
     ui->setupUi(this);
     ui->elementInfo->hide();
 
+    searchElements = new QLineEdit(this);
+    searchElements->setPlaceholderText("Search For Elements");
+    ui->menu->setCornerWidget(searchElements, Qt::TopLeftCorner);
+
     connect (&model,
             &Model::UpdateWorld,
             ui->gameView,
@@ -80,6 +84,16 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             ui->elementInfo,
             &ElementInfo::SetElementInfo);
 
+    connect(searchElements,
+            &QLineEdit::textEdited,
+            this,
+            &MainWindow::SearchForElement);
+
+    connect(searchElements,
+            &QLineEdit::returnPressed,
+            this,
+            &MainWindow::DisplaySearchResults);
+
 }
 
 MainWindow::~MainWindow()
@@ -114,6 +128,22 @@ void MainWindow::HideElementInfo(){
 void MainWindow::UpdateProgress(QString element){
     ui->progressBar->setValue(ui->progressBar->value() + 1);
     ui->menuElements->addAction(element);
+}
+
+void MainWindow::SearchForElement(const QString &text){
+    for (QAction *action : ui->menuElements->actions()) {
+        if (text.isEmpty() || action->text().startsWith(text, Qt::CaseInsensitive)) {
+            action->setVisible(true);
+        }
+        else{
+            action->setVisible(false);
+        }
+    }
+}
+
+void MainWindow::DisplaySearchResults(){
+    QPoint searchPos = searchElements->mapToGlobal(QPoint(searchElements->width(), searchElements->height()));
+    ui->menuElements->exec(searchPos);
 }
 
 

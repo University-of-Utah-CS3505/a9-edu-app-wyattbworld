@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "model.h"
 #include <QDebug>
+#include <QLineEdit>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,6 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QLineEdit *searchElements;
 
 public slots:
     void DisplayElementInfo();
@@ -26,7 +29,8 @@ public slots:
     void UpdateProgress(QString element);
     void DisplayElementFromMenu();
     void ConnectElementActions();
-
+    void SearchForElement(const QString &text);
+    void DisplaySearchResults();
 signals:
     void RequestDisplayElementInfo(QString element);
 };
