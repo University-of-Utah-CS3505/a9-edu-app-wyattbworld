@@ -1,18 +1,25 @@
+/*
+Wyatt Bruchhauser, Jackson Wetzel, Julia Thomas, Bodie Criswell, Nathaniel Pimentel, Brenlie Shirts
+CS 3505
+Assignment 9 : Educational App
+File Description: This file implements the element description cards/visuals.
+*/
+
 #include "elementinfo.h"
 #include "ui_elementinfo.h"
-#include <QDebug>
 
-//note this is not model-view yet, just trying to get it somewhat set up
 ElementInfo::ElementInfo(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ElementInfo)
 {
     ui->setupUi(this);
 
-    //make the background of the popup white
+    //fill the background of the card to be white
     QString styleSheet = QString("background-color: white");
     ui->frame->setStyleSheet(styleSheet);
 
+    //store all of the needed information for each element in the map of element information
+    //each element corresponds to a list of properties which include full name, atomic number, group, phase at standard temperature and pressure, and an interesting fact/use of the element.
     elementDescriptions["H"] = {"Hydrogen (H)", "Atomic number : 1 \nGroup : S-block \nPhase @ STP : Gas" , "Hydrogen comprises more than 90% of the atoms in the universe and was first recognized as a distinct substance in 1776. On earth, it is most commonly found combined with oxygen as water, and is also present in living plants, petroleum, coal, and other organic matter."};
     elementDescriptions["He"] = {"Helium (He)","Atomic number : 2 \nGroup : Noble Gas \nPhase @ STP : Gas" , "The first evidence of helium was detected during the solar eclipse of 1868. It is the second most abundant element and can be extracted from natural gas. The majority of helium in the U.S. is obtained from wells in Texas, Oklahoma, and Kansas."};
     elementDescriptions["Li"] = {"Lithium (Li)", "Atomic number : 3 \nGroup: S-block \nPhase @ STP : Solid", "Discovered in 1817, lithium is the lightest of all metals. It does not occur freely in nature and is found (combined) in all igneous rocks, mineral springs, and the minerals lepidolite, spodumene, petalite, and amblygonite."};
@@ -69,6 +76,7 @@ ElementInfo::ElementInfo(QWidget *parent) :
     elementDescriptions["Xe"] = {"Xenon (Xe)", "Atomic number : 54  \nGroup: Noble Gas  \nPhase @STP : Gas", "Discovered in 1898, xenon is a noble or inert gas. It is present in the atmospheres of Earth and Mars and in gases from certain mineral springs."};
 
 
+    //if the exit button (top right corner) is clicked, close the element card
     connect(ui->exitButton,
             &QPushButton::clicked,
             this,
@@ -81,9 +89,11 @@ ElementInfo::~ElementInfo()
 }
 
 void ElementInfo::SetElementInfo(QString element){
+    //set the appropriate images and information
     SetAssetContent(element);
     SetImageContent(element);
     SetKeyProperties(element);
+    //then signal to display the element card
     emit RequestDisplayElementInfo();
 }
 
@@ -91,43 +101,48 @@ void ElementInfo::ExitElement(){
     emit closeElement();
 }
 
-
-///
-/// \brief ElementInfo::setAssetContent Sets the "asset" image of the element.
-/// \param element Text representing the element, the atomic number followed by name (ex: "01Hydrogen")
-///
 void ElementInfo::SetAssetContent(const QString &element)
 {
+    //get the image from the resources file and check that it is valid
     QImage assetImage(":/Elements/Elements/"+element+".png");
-   // make the image the same size as the label
-    QSize size(ui->elementAsset->width(), ui->elementAsset->height());
-    QImage resizedImage = assetImage.scaled(size, Qt::KeepAspectRatio);
-    //display the image on the label
-    ui->elementAsset->setPixmap(QPixmap::fromImage(resizedImage));
+    if (assetImage.isNull()) {
+        qDebug() << "Error loading asset image for element card";
+    }
+    else{
+        // make the image the same size as the label that contains it
+        QSize size(ui->elementAsset->width(), ui->elementAsset->height());
+        QImage resizedImage = assetImage.scaled(size, Qt::KeepAspectRatio);
+
+        //display the image on the label
+        ui->elementAsset->setPixmap(QPixmap::fromImage(resizedImage));
+    }
 }
 
-///
-/// \brief ElementInfo::setImageContent Sets the image representing the element.
-/// \param element Text representing the element, the atomic number followed by name (ex: "01Hydrogen")
-///
+
 void ElementInfo::SetImageContent(const QString &element)
 {
 
+    //get the image from the resources file and check that it is valid
     QImage image(":/ElementImages/elementImages/"+element+"Image.jpg");
     if (image.isNull()) {
-        qDebug() << "Error loading element image";
+        qDebug() << "Error loading element image for element card";
     }
-    //make the image the same size as the label
-    QSize size(ui->elementImage->width(), ui->elementImage->height());
-    QImage resizedImage = image.scaled(size, Qt::KeepAspectRatio);
-    //display the image on the label
-    ui->elementImage->setPixmap(QPixmap::fromImage(resizedImage));
+    else{
+        //make the image the same size as the label that contains it
+        QSize size(ui->elementImage->width(), ui->elementImage->height());
+        QImage resizedImage = image.scaled(size, Qt::KeepAspectRatio);
 
+        //display the image on the label
+        ui->elementImage->setPixmap(QPixmap::fromImage(resizedImage));
+    }
 }
 
 void ElementInfo::SetKeyProperties(const QString &element)
 {
+    //set the element name label to the name stored in the map
     ui->elementName->setText(elementDescriptions[element][0]);
+    //set the key properties label to the properties stored in the map
     ui->keyProperties->setText(elementDescriptions[element][1]);
+    //set the uses/facts label to the uses/facts stored in the map
     ui->uses->setText(elementDescriptions[element][2]);
 }
