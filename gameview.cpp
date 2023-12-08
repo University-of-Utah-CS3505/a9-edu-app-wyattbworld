@@ -94,7 +94,7 @@ void GameView::mousePressEvent(QMouseEvent *event)
 
             //check if we need to display the element info (is it new?)
 
-            emit RequestElementStatus(nextAtom->elementNotation);
+            //emit RequestElementStatus(nextAtom->elementNotation);
 
             QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
 
@@ -102,6 +102,7 @@ void GameView::mousePressEvent(QMouseEvent *event)
             emit ChangeElementStatus(nextAtom->elementNotation);
             nextAtom = atomList[generator->bounded(10)];
             emit SendAtomPreview(nextAtom);
+            emit RequestElementStatus(nextAtom->elementNotation);
         }
     }
 }
