@@ -8,6 +8,7 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
 {
     ui->setupUi(this);
     ui->gameOverLabel->setVisible(false);
+    ui->tutorialButtonSide->setVisible(false);
 
     connect (&model,
             &Model::UpdateWorld,
@@ -48,6 +49,26 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &QPushButton::clicked,
             &model,
             &Model::QuitGame);
+
+    connect (&model,
+            &Model::SetTutorialButtonVisibility,
+            ui->tutorialButton,
+            &QPushButton::setVisible);
+
+    connect (&model,
+            &Model::SetTutorialButtonSideVisibility,
+            ui->tutorialButtonSide,
+            &QPushButton::setVisible);
+
+    connect (ui->tutorialButton,
+            &QPushButton::clicked,
+            &model,
+            &Model::OpenTutorial);
+
+    connect (ui->tutorialButtonSide,
+            &QPushButton::clicked,
+            &model,
+            &Model::OpenTutorial);
 
     connect (&model,
             &Model::SetQuitButtonVisibility,

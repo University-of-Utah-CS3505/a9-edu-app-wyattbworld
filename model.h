@@ -36,6 +36,7 @@ public slots:
     void MakeCircleBody(float x, float y, float radius);
     void RecieveCheckForGameOver(); //Receives a request to check if the game is over.
     void QuitGame();
+    void OpenTutorial();
 
 signals:
     void UpdateWorld();
@@ -43,6 +44,8 @@ signals:
     void SendStartGame();
     void SetStartButtonVisibility(bool);
     void SetQuitButtonVisibility(bool);
+    void SetTutorialButtonVisibility(bool);
+    void SetTutorialButtonSideVisibility(bool);
     void SetGameViewVisibility(bool);
     void SetGameOverLabelVisibility(bool);
 };
