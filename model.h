@@ -32,6 +32,8 @@ private:
 
     QMap<QString, bool> elementStatus;
 
+    int numElementsFound;
+
     GameContactListener contactListener;
 
     void GameOver(); //Activates the game over sequence.
@@ -53,7 +55,7 @@ signals:
     void SendStartGame();
     void SendAtomList(QVector<Atom*>);
     void RequestDisplayElementInfo(QString element);
-    void RequestUpdateProgress(QString element);
+    void RequestUpdateProgress(QString element, int numElementsFound);
 };
 
 #endif // MODEL_H

@@ -60,6 +60,8 @@ Model::Model(QObject *parent)
     }
     bodies.push_back(leftWallBody);
     bodies.push_back(rightWallBody);
+
+    numElementsFound = 0;
 }
 
 void Model::MakeCircleBody(float x, float y, float radius)
@@ -112,7 +114,8 @@ void Model::SendElementStatus(QString element){
 
 void Model::UpdateElementStatus(QString element){
     elementStatus[element] = true;
-    emit RequestUpdateProgress(element);
+    numElementsFound +=1;
+    emit RequestUpdateProgress(element, numElementsFound);
 }
 
 void Model::RecieveCheckForGameOver()

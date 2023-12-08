@@ -7,8 +7,9 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->elementInfo->hide();
+    ui->elementInfo->hide();//don't show any element cards before the game starts
 
+    //setup the element search bar
     searchElements = new QLineEdit(this);
     searchElements->setPlaceholderText("Search For Elements");
     ui->menu->setCornerWidget(searchElements, Qt::TopLeftCorner);
@@ -48,47 +49,55 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             ui->gameView,
             &GameView::ReceiveAtomList);
 
+    //when the GameView requests the status of an element, it will be sent by the model
     connect (ui->gameView,
             &GameView::RequestElementStatus,
             &model,
             &Model::SendElementStatus);
 
+    //when the model requests to display an element's info card, the ElementInfo will set the information corresponding to the element
     connect (&model,
             &Model::RequestDisplayElementInfo,
             ui->elementInfo,
             &ElementInfo::SetElementInfo);
 
+    //when ElementInfo requests to display an element's info card, the main window will display the card
     connect (ui->elementInfo,
             &ElementInfo::RequestDisplayElementInfo,
             this,
             &MainWindow::DisplayElementInfo);
 
+    //when ElementInfo requests to close the element info card, the main window will hide the card
     connect (ui->elementInfo,
             &ElementInfo::closeElement,
             this,
             &MainWindow::HideElementInfo);
 
-
+    //when the model requests to update the elements found progres, the main window will update the progress bar and menu
     connect (&model,
             &Model::RequestUpdateProgress,
             this,
             &MainWindow::UpdateProgress);
 
+    //when the menu is about to be shown, each current "action" (element) in the menu will be connected to display info
     connect (ui->menuElements,
             &QMenu::aboutToShow,
             this,
             &MainWindow::ConnectElementActions);
 
+    //when the main window requests to display an element's info card, ElementInfo will set the information corresponding to the element
     connect(this,
             &MainWindow::RequestDisplayElementInfo,
             ui->elementInfo,
             &ElementInfo::SetElementInfo);
 
+    //when the user edits the element search bar, the existing elements in the menu which don't match the search will be "hidden"
     connect(searchElements,
             &QLineEdit::textEdited,
             this,
             &MainWindow::SearchForElement);
 
+    //when the user presses enter, the matching search results will be displayed in the menu
     connect(searchElements,
             &QLineEdit::returnPressed,
             this,
@@ -119,6 +128,7 @@ void MainWindow::StartElementPreviews()
     ui->AtomImagePreview->show();
     ui->NextElementIndicator->show();
 }
+
 void MainWindow::GetNextAtom(Atom* nextAtom)
 {
     QPixmap atomBody = QPixmap("://Elements//Elements/"+ nextAtom->elementNotation + ".png");
@@ -128,10 +138,8 @@ void MainWindow::GetNextAtom(Atom* nextAtom)
 }
 
 void MainWindow::ConnectElementActions(){
-    // Disconnect existing connections to avoid duplicates
     QMenu *menu = qobject_cast<QMenu*>(sender());
-    //QObject::disconnect(sender(), nullptr, nullptr, nullptr);
-
+    //for each element in the menu, when clicked, the corresponding element card will be displayed
     for (QAction *action : menu->actions()) {
         connect(action, &QAction::triggered, this, &MainWindow::DisplayElementFromMenu);
     }
@@ -142,8 +150,10 @@ void MainWindow::DisplayElementInfo(){
 }
 
 void MainWindow::DisplayElementFromMenu(){
+    //get the desired element based on which menu "action" (element) was triggered
     QAction *action = qobject_cast<QAction*>(sender());
     QString element = action->text();
+    //request to display the corresponding info card
     emit RequestDisplayElementInfo(element);
 }
 
@@ -151,23 +161,25 @@ void MainWindow::HideElementInfo(){
     ui->elementInfo->hide();
 }
 
-void MainWindow::UpdateProgress(QString element){
-    ui->progressBar->setValue(ui->progressBar->value() + 1);
-    ui->menuElements->addAction(element);
+void MainWindow::UpdateProgress(QString element, int numElementsFound){
+    ui->progressBar->setValue(numElementsFound); //increment the progress bar
+    ui->menuElements->addAction(element); //add the element to the menu of elements
 }
 
 void MainWindow::SearchForElement(const QString &text){
+    //for any "search" (must click enter), if the text entered matches any elements in the menu, those elements will be in the search results
     for (QAction *action : ui->menuElements->actions()) {
         if (text.isEmpty() || action->text().startsWith(text, Qt::CaseInsensitive)) {
             action->setVisible(true);
         }
         else{
-            action->setVisible(false);
+            action->setVisible(false);//all other elements will be "hidden"
         }
     }
 }
 
 void MainWindow::DisplaySearchResults(){
+    //display the search results in the same position as the menu
     QPoint searchPos = searchElements->mapToGlobal(QPoint(searchElements->width(), searchElements->height()));
     ui->menuElements->exec(searchPos);
 }
