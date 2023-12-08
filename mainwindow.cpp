@@ -14,6 +14,19 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
     searchElements->setPlaceholderText("Search For Elements");
     ui->menu->setCornerWidget(searchElements, Qt::TopLeftCorner);
 
+    //make the progress bar have an ombre effect
+    QString styleSheet =
+        "QProgressBar {"
+        "    border: 1px solid black;"
+        "    border-radius: 5px;"
+        "}"
+
+        "QProgressBar::chunk {"
+        "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #00FF9C, stop:1 #7E00FF);"
+        "}";
+
+    ui->progressBar->setStyleSheet(styleSheet);
+
     connect (&model,
             &Model::UpdateWorld,
             ui->gameView,

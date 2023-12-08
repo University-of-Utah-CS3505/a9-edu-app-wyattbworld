@@ -50,9 +50,9 @@
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>320</x>
       <y>60</y>
-      <width>118</width>
+      <width>161</width>
       <height>23</height>
      </rect>
     </property>
@@ -62,18 +62,27 @@
     <property name="value">
      <number>0</number>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>60</y>
-      <width>101</width>
+      <x>330</x>
+      <y>40</y>
+      <width>151</width>
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Tw Cen MT Condensed Extra Bold</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>% Elements Found:</string>
+     <string>Elements Discovered</string>
     </property>
    </widget>
    <widget class="QLabel" name="NextElementIndicator">
@@ -109,12 +118,12 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuElements">
     <property name="title">
-     <string>Elements</string>
+     <string>Discovered Elements</string>
     </property>
    </widget>
    <addaction name="menuElements"/>
