@@ -123,6 +123,16 @@
      <string>Tutorial</string>
     </property>
    </widget>
+   <widget class="TutorialView" name="tutorialView" native="true">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>20</y>
+      <width>450</width>
+      <height>500</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -141,6 +151,12 @@
    <class>GameView</class>
    <extends>QWidget</extends>
    <header>gameview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TutorialView</class>
+   <extends>QWidget</extends>
+   <header location="global">tutorialview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

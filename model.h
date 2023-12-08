@@ -48,6 +48,7 @@ signals:
     void SetTutorialButtonSideVisibility(bool);
     void SetGameViewVisibility(bool);
     void SetGameOverLabelVisibility(bool);
+    void SetTutorialViewVisability(bool);
 };
 
 #endif // MODEL_H

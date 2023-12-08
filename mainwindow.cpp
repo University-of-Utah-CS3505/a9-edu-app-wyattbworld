@@ -9,6 +9,7 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
     ui->setupUi(this);
     ui->gameOverLabel->setVisible(false);
     ui->tutorialButtonSide->setVisible(false);
+    ui->tutorialView->setVisible(false);
 
     connect (&model,
             &Model::UpdateWorld,
@@ -84,6 +85,11 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &Model::SetGameOverLabelVisibility,
             ui->gameOverLabel,
             &QLabel::setVisible);
+
+    connect(&model,
+            &Model::SetTutorialViewVisability,
+            ui->tutorialView,
+            &TutorialView::setVisible);
 
 }
 

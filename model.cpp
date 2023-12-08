@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <QApplication>
 #include <QDebug>
+#include "tutorialview.h"
 
 Model::Model(QObject *parent)
     : QObject{parent}, world(b2World(b2Vec2(0.0f, 100.0f)))
@@ -137,6 +138,8 @@ void Model::QuitGame() {
 
 void Model::OpenTutorial()
 {
+    emit SetTutorialViewVisability(true);
+    emit SetTutorialButtonSideVisibility(false);
     qDebug() << "Open";
 }
 // Box2D code from lab14
