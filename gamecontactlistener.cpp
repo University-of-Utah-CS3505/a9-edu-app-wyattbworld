@@ -25,6 +25,10 @@ void GameContactListener::BeginContact(b2Contact* contact)
         // qDebug() << "posA: " << posA.x << ", " << posA.y;
         // qDebug() << "posB: " << posB.x << ", " << posB.y;
         collidingBodies[bodyA] = bodyB;
+        collidingBodies[bodyB] = bodyA;
     }
+}
 
+void GameContactListener::EndContact(b2Contact* contact)
+{
 }
