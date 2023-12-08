@@ -72,6 +72,20 @@ void GameView::paintEvent(QPaintEvent *)
             // painter.drawEllipse(center, radius, radius);
 
             painter.drawPixmap(center.x()-radius, center.y()-radius, atomList[radius/3-1]->atomBody);
+
+            // if catalyst draw its joints
+            if((radius/3 >= 21 && radius/3 <= 30) || (radius/3 >= 39 && radius/3 <= 48))
+            {
+                b2JointEdge* currentJoint = bodies[i]->GetJointList();
+                painter.setPen(QPen(Qt::red, 3));
+                while(currentJoint != nullptr)
+                {
+                    QPoint posA = ModelToGameView(currentJoint->joint->GetBodyA()->GetPosition());
+                    QPoint posB = ModelToGameView(currentJoint->joint->GetBodyB()->GetPosition());
+                    painter.drawLine(posA, posB);
+                    currentJoint = currentJoint->next;
+                }
+            }
         }
 
         emit RequestCheckForGameOver();

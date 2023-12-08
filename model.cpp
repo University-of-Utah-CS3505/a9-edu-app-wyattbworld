@@ -165,14 +165,14 @@ void Model::HandleCollision(b2Contact* collissions)
 
         // If non catalyst has a joint, ignore it
         // for ignoring elemets when joined to a catalyst
-        if((isACatalyst && joinedBodies.count(bodyB) == 1)
-            || (isBCatalyst && joinedBodies.count(bodyA) == 1)) {
+        if((isACatalyst && bodyB->GetJointList() != nullptr)
+            || (isBCatalyst && bodyA->GetJointList() != nullptr)) {
             return;
         }
 
         // Two non catalysts collide and either one is joined, we don't want them to combine
         bool bothNonCatalyst = !isACatalyst && !isBCatalyst;
-        bool eitherHaveJoints =  joinedBodies.count(bodyB) == 1 || joinedBodies.count(bodyA) == 1;
+        bool eitherHaveJoints =  bodyB->GetJointList() != nullptr || bodyA->GetJointList() != nullptr;
         if(bothNonCatalyst && eitherHaveJoints) {
             return;
         }
@@ -184,13 +184,13 @@ void Model::HandleCollision(b2Contact* collissions)
             // join the bodies and calculate the catalyst threshold
             if(isACatalyst)
             {
-                if(joinedBodies.count(bodyB) == 0) {
+                if(bodyB->GetJointList() == nullptr) {
                     Catalyze(bodyA, bodyB);
                 }
             }
             else
             {
-                if(joinedBodies.count(bodyA) == 0) {
+                if(bodyA->GetJointList() == nullptr) {
                     Catalyze(bodyB, bodyA);
                 }
             }
@@ -214,6 +214,7 @@ void Model::HandleCollision(b2Contact* collissions)
 void Model::Catalyze(b2Body* catalyst, b2Body* nonCatalyst)
 {
     JoinBodies(catalyst, nonCatalyst);
+    b2Vec2 catalystPos = catalyst->GetPosition();
     float radius = catalyst->GetFixtureList()->GetShape()->m_radius;
     int catalystThreshold = radius/12;
     qDebug() << "catalyst threshold: " << catalystThreshold;
@@ -222,33 +223,30 @@ void Model::Catalyze(b2Body* catalyst, b2Body* nonCatalyst)
     if(joinedBodies[catalyst].size() >= (unsigned int) catalystThreshold)
     {
         qDebug() << "Removing catalyst";
-
-        // destroy joints
-        // b2JointEdge* current = catalyst->GetJointList()->next;
-        // while(current != nullptr) {
-        //     world.DestroyJoint(current->joint);
-        //     current = current->next;
-        // }
-
         // Crashing inconsistenly when reaction occurs.
         // Probably something to do with the order that bodies and joints are deleted
 
-        // Remove joined bodies
+        // add new bodies
+//        for(b2Body* body : joinedBodies[catalyst]) {
+//            MakeCircleBody(catalystPos.x, catalystPos.y, body->GetFixtureList()->GetShape()->m_radius);
+//        }
+
+
+          // recombining crashes
+//        // remove the joints attatched to the catalyst
+//        int buffer = 2000;
+//        b2JointEdge* currentJoint = catalyst->GetJointList();
+//        while(currentJoint != nullptr)
+//        {
+//            QTimer::singleShot(buffer, this, [=](){world.DestroyJoint(currentJoint->joint);});
+//            currentJoint = currentJoint->next;
+//            buffer = buffer + 2000;
+//        }
+//        // Remove joined bodies
         for(b2Body* body : joinedBodies[catalyst]) {
             RemoveBodies(body);
         }
         RemoveBodies(catalyst);
-
-//        // Remove bodyA from bodies and world
-//        vector<b2Body*>::iterator it = std::find(bodies.begin(), bodies.end(), body);
-//        if(it != bodies.end()) {
-//            bodies.erase(it);
-//            world.DestroyBody(body);
-//            // catalystJointCount.erase(body);
-//            joinedBodies.erase(body);
-//        }
-//        contactListener.collidingBodies.clear();
-//        emit SendBodies(bodies);
 
         // We are not deleting every joined noncatalyst, just the most recently joined.
         // Thus the non removed noncatayst isn't removed from the jointCount.
