@@ -14,9 +14,11 @@ ElementInfo::ElementInfo(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //fill the background of the card to be white
-    QString styleSheet = QString("background-color: white");
-    ui->frame->setStyleSheet(styleSheet);
+    //change the background color and add a border
+    QString styleSheet = QString("background-color: #CCE4ED;");
+    this->setStyleSheet(styleSheet);
+
+    ui->exitButton->setStyleSheet(QString("background-color: #BB4430;"));
 
     //store all of the needed information for each element in the map of element information
     //each element corresponds to a list of properties which include full name, atomic number, group, phase at standard temperature and pressure, and an interesting fact/use of the element.
