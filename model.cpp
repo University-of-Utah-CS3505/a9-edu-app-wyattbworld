@@ -1,6 +1,5 @@
 #include "model.h"
 #include <Box2D/Box2D.h>
-#include <stdio.h>
 #include <QDebug>
 
 Model::Model(QObject *parent)
@@ -134,7 +133,7 @@ void Model::GameOver()
 
     vector<b2Body*> temp {bodies[0], bodies[1], bodies[2]};
     bodies = temp;
-    emit SendBodiesTemp();
+    emit SendBodies(bodies);
 }
 
 void Model::HandleCollision(map<b2Body*, b2Body*> collisions)
@@ -160,16 +159,13 @@ void Model::HandleCollision(map<b2Body*, b2Body*> collisions)
             // join the bodies and calculate the catalyst threshold
             if(isACatalyst)
             {
-                if(catalystJointCount.count(bodyB) == 0) {
-                    JoinBodies(bodyA, bodyB);
+                if(joinedBodies.count(bodyB) == 0) {
                     Catalyze(bodyA, bodyB);
-
                 }
             }
             else
             {
-                if(catalystJointCount.count(bodyA) == 0) {
-                    JoinBodies(bodyB, bodyA);
+                if(joinedBodies.count(bodyA) == 0) {
                     Catalyze(bodyB, bodyA);
                 }
             }
@@ -177,15 +173,15 @@ void Model::HandleCollision(map<b2Body*, b2Body*> collisions)
         else if(newRadius/3-1 < 54)
         {
             // If non catalyst has a joint, ignore it
-            if((isACatalyst && catalystJointCount.count(bodyB) >= 1)
-                || (isBCatalyst && catalystJointCount.count(bodyA) >= 1)) {
+            if((isACatalyst && joinedBodies.count(bodyB) == 1)
+                || (isBCatalyst && joinedBodies.count(bodyA) == 1)) {
                 qDebug() << "ignore when joined";
                 return;
             }
 
             // Two non catalysts collide and either one is joined, we don't want them to combine
             bool bothNonCatalyst = !isACatalyst && !isBCatalyst;
-            bool eitherHaveJoints =  catalystJointCount.count(bodyB) >= 1 || catalystJointCount.count(bodyA) >= 1;
+            bool eitherHaveJoints =  joinedBodies.count(bodyB) == 1 || joinedBodies.count(bodyA) == 1;
             if(bothNonCatalyst && eitherHaveJoints) {
                 return;
             }
@@ -204,13 +200,13 @@ void Model::HandleCollision(map<b2Body*, b2Body*> collisions)
 
 void Model::Catalyze(b2Body* catalyst, b2Body* nonCatalyst)
 {
-    float radius = catalyst->GetFixtureList()->GetShape()->m_radius;
+    JoinBodies(catalyst, nonCatalyst);
+    // float radius = catalyst->GetFixtureList()->GetShape()->m_radius;
     // int catalystThreshold = radius/12;
-
     // qDebug() << "catalyst threshold: " << catalystThreshold;
 
     // When reaction occurs
-    if(catalystJointCount[catalyst] >= 2)
+    if(joinedBodies[catalyst].size() >= 2)
     {
         qDebug() << "Removing catalyst";
 
@@ -222,9 +218,13 @@ void Model::Catalyze(b2Body* catalyst, b2Body* nonCatalyst)
         // }
 
         // Crashing inconsistenly when reaction occurs.
+        // Probably something to do with the order that bodies and joints are deleted
 
+        // Remove joined bodies
+        for(b2Body* body : joinedBodies[catalyst]) {
+            RemoveBodies(body);
+        }
         RemoveBodies(catalyst);
-        RemoveBodies(nonCatalyst);
         // We are not deleting every joined noncatalyst, just the most recently joined.
         // Thus the non removed noncatayst isn't removed from the jointCount.
 
@@ -239,7 +239,8 @@ void Model::RemoveBodies(b2Body* body)
     if(it != bodies.end()) {
         bodies.erase(it);
         world.DestroyBody(body);
-        catalystJointCount.erase(body);
+        // catalystJointCount.erase(body);
+        joinedBodies.erase(body);
     }
     contactListener.collidingBodies.clear();
     emit SendBodies(bodies);
@@ -261,10 +262,18 @@ void Model::JoinBodies(b2Body* bodyA, b2Body* bodyB)
     bodyA->GetWorld()->CreateJoint(&jointDef);
 
     // Accumlate joint count
-    catalystJointCount[bodyA] += 1;
-    catalystJointCount[bodyB] += 1;
+    // catalystJointCount[bodyA] += 1;
+    // catalystJointCount[bodyB] += 1;
 
-    qDebug() << "catalyst joint count: " << catalystJointCount[bodyA];
-    qDebug() << "non catalyst joint count: " << catalystJointCount[bodyB];
+    // Keep track of which bodies are joined
+    joinedBodies[bodyA].push_back(bodyB);
+    joinedBodies[bodyB].push_back(bodyA);
+
+
+    // qDebug() << "catalyst joint count: " << catalystJointCount[bodyA];
+    // qDebug() << "non catalyst joint count: " << catalystJointCount[bodyB];
+
+    qDebug() << "catalyst joint count: " << joinedBodies[bodyA].size();
+    qDebug() << "non catalyst joint count: " << joinedBodies[bodyB].size();
 
 }

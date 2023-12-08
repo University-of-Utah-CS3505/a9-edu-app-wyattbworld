@@ -33,6 +33,7 @@ private:
     QVector<Atom*> elementList;
     QMap<QString, bool> elementStatus;
     map<b2Body*, int> catalystJointCount;
+    map<b2Body*, vector<b2Body*>> joinedBodies;
 
 
     void GameOver(); //Activates the game over sequence.
