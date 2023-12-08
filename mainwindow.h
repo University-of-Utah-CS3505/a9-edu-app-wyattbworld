@@ -31,6 +31,8 @@ public slots:
     void ConnectElementActions();
     void SearchForElement(const QString &text);
     void DisplaySearchResults();
+    void StartElementPreviews();
+    void GetNextAtom(Atom* nextAtom);
 signals:
     void RequestDisplayElementInfo(QString element);
 };

@@ -76,6 +76,32 @@
      <string>% Elements Found:</string>
     </property>
    </widget>
+   <widget class="QLabel" name="NextElementIndicator">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>120</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Next Element:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="AtomImagePreview">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>150</y>
+      <width>80</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menu">
    <property name="geometry">
@@ -83,7 +109,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuElements">

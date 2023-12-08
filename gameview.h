@@ -46,6 +46,7 @@ private:
     QPoint ModelToGameView(b2Vec2 coord);
     b2Vec2 GameViewToModel(QPoint coord);
     QVector<Atom*> atomList;
+    Atom* nextAtom;
 
 public slots:
     void ReceiveStartGame();
@@ -58,6 +59,7 @@ signals:
     void RequestCheckForGameOver(); //This signal is sent to the model to tell it to check if the game is over.
     void RequestElementStatus(QString name);
     void ChangeElementStatus(QString name);
+    void SendAtomPreview(Atom* nextAtom);
 };
 
 #endif // GAMEVIEW_H

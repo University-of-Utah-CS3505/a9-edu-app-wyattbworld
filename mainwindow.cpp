@@ -94,11 +94,37 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             this,
             &MainWindow::DisplaySearchResults);
 
+    connect (ui->startButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::StartElementPreviews);
+
+    connect (ui->gameView,
+            &GameView::SendAtomPreview,
+            this,
+            &MainWindow::GetNextAtom);
+
+    ui->AtomImagePreview->hide();
+    ui->NextElementIndicator->hide();
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::StartElementPreviews()
+{
+    ui->AtomImagePreview->show();
+    ui->NextElementIndicator->show();
+}
+void MainWindow::GetNextAtom(Atom* nextAtom)
+{
+    QPixmap atomBody = QPixmap("://Elements//Elements/"+ nextAtom->elementNotation + ".png");
+    QSize size(80, 80);
+    atomBody = atomBody.scaled(size);
+    ui->AtomImagePreview->setPixmap(atomBody);
 }
 
 void MainWindow::ConnectElementActions(){

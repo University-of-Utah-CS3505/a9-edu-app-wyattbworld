@@ -28,6 +28,8 @@ void GameView::ReceiveBodies(vector<b2Body*> &sentBodies)
 void GameView::ReceiveAtomList(QVector<Atom*> elements)
 {
     atomList = elements;
+    nextAtom = atomList[generator->bounded(10)];
+    emit SendAtomPreview(nextAtom);
 }
 
 void GameView::ReceiveStartGame()
@@ -91,13 +93,15 @@ void GameView::mousePressEvent(QMouseEvent *event)
             dropEnabled=false; //Make it so the user has to wait before sending the next circle.
 
             //check if we need to display the element info (is it new?)
-            Atom* atom = atomList[generator->bounded(10)];
-            emit RequestElementStatus(atom->elementNotation);
+
+            emit RequestElementStatus(nextAtom->elementNotation);
 
             QTimer::singleShot(CIRCLEDROPTIME, [this]{dropEnabled=true;});
 
-            emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, atom->radius);
-            emit ChangeElementStatus(atom->elementNotation);
+            emit RequestMakeCircleBody(GameViewToModel(event->pos()).x , GameViewToModel(QPoint(0, 0)).y, nextAtom->radius);
+            emit ChangeElementStatus(nextAtom->elementNotation);
+            nextAtom = atomList[generator->bounded(10)];
+            emit SendAtomPreview(nextAtom);
         }
     }
 }
