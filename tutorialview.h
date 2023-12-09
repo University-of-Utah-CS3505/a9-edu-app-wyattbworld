@@ -16,6 +16,12 @@ public:
     ~TutorialView();
 
 private:
+    void paintEvent(QPaintEvent *);
+
+private slots:
+    void on_exitButton_clicked();
+
+private:
     Ui::TutorialView *ui;
 };
 

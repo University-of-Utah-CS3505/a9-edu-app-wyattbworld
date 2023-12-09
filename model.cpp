@@ -129,6 +129,7 @@ void Model::GameOver()
     emit SetGameViewVisibility(false);
     emit SetStartButtonVisibility(true);
     emit SetQuitButtonVisibility(true);
+    emit SetTutorialButtonVisibility(true);
     emit SetTutorialButtonSideVisibility(false);
 }
 
@@ -139,7 +140,6 @@ void Model::QuitGame() {
 void Model::OpenTutorial()
 {
     emit SetTutorialViewVisability(true);
-    emit SetTutorialButtonSideVisibility(false);
     qDebug() << "Open";
 }
 // Box2D code from lab14
