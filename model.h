@@ -36,8 +36,6 @@ private:
 
 
     vector<b2Body*> bodies;
-    QVector<Atom*> elementList;
-    QMap<QString, bool> elementStatus;
     map<b2Body*, int> catalystJointCount;
     map<b2Body*, vector<b2Body*>> joinedBodies;
 

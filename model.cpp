@@ -168,6 +168,11 @@ void Model::HandleCollision(b2Contact* collissions)
         // qDebug() << elementB << " is catalyst: " << isBCatalyst;
 
 
+        bool isANobleGas = (radiusA/3 == 2) || (radiusA/3 == 10) || (radiusA/3 == 18) || (radiusA/3 == 36) || (radiusA/3 == 54);
+        bool isBNobleGas = (radiusB/3 == 2) || (radiusB/3 == 10) || (radiusB/3 == 18) || (radiusB/3 == 36) || (radiusB/3 == 54);
+        if(isANobleGas || isBNobleGas)
+            return;
+
         // If non catalyst has a joint, ignore it
         // for ignoring elemets when joined to a catalyst
         if((isACatalyst && bodyB->GetJointList() != nullptr)
@@ -223,6 +228,7 @@ void Model::Catalyze(b2Body* catalyst, b2Body* nonCatalyst)
     float radius = catalyst->GetFixtureList()->GetShape()->m_radius;
     int catalystThreshold = radius/12;
     qDebug() << "catalyst threshold: " << catalystThreshold;
+    int newRadius = 0;
 
     // When reaction occurs
     if(joinedBodies[catalyst].size() >= (unsigned int) catalystThreshold)
@@ -249,10 +255,16 @@ void Model::Catalyze(b2Body* catalyst, b2Body* nonCatalyst)
 //        }
 //        // Remove joined bodies
         for(b2Body* body : joinedBodies[catalyst]) {
+            newRadius += body->GetFixtureList()->GetShape()->m_radius;
             RemoveBodies(body);
         }
         RemoveBodies(catalyst);
 
+        if(newRadius/3-1 >54) {
+            newRadius = 162;
+        }
+
+        MakeCircleBody(0, 0, newRadius);
         // We are not deleting every joined noncatalyst, just the most recently joined.
         // Thus the non removed noncatayst isn't removed from the jointCount.
 
