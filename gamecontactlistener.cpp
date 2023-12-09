@@ -22,9 +22,13 @@ void GameContactListener::BeginContact(b2Contact* contact)
     // We do this by setting the circle bodies userData in the model
     // For now, this differentiates between circles and floor/wall, more differences will have to be dealt with in the model
     if(bodyA->GetUserData() && bodyB->GetUserData()) {
-        qDebug() << "posA: " << posA.x << ", " << posA.y;
-        qDebug() << "posB: " << posB.x << ", " << posB.y;
+        // qDebug() << "posA: " << posA.x << ", " << posA.y;
+        // qDebug() << "posB: " << posB.x << ", " << posB.y;
         collidingBodies[bodyA] = bodyB;
+        collidingBodies[bodyB] = bodyA;
     }
+}
 
+void GameContactListener::EndContact(b2Contact* contact)
+{
 }

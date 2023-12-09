@@ -74,6 +74,30 @@ void GameView::paintEvent(QPaintEvent *)
             // painter.drawEllipse(center, radius, radius);
 
             painter.drawPixmap(center.x()-radius, center.y()-radius, atomList[radius/3-1]->atomBody);
+
+            // if catalyst draw its joints
+            if((radius/3 >= 21 && radius/3 <= 30) || (radius/3 >= 39 && radius/3 <= 48))
+            {
+                // set joint brightness based on connected joints
+                b2JointEdge* currentJointTotal = bodies[i]->GetJointList();
+                int joints = 0;
+                while(currentJointTotal != nullptr)
+                {
+                    joints = joints + 1;
+                    currentJointTotal = currentJointTotal->next;
+                }
+                int alpha = 255 * ((double)(joints + 2) / (radius/12 + 2));
+
+                b2JointEdge* currentJoint = bodies[i]->GetJointList();
+                painter.setPen(QPen(QColor(255, 17, 0, alpha), 3));
+                while(currentJoint != nullptr)
+                {
+                    QPoint posA = ModelToGameView(currentJoint->joint->GetBodyA()->GetPosition());
+                    QPoint posB = ModelToGameView(currentJoint->joint->GetBodyB()->GetPosition());
+                    painter.drawLine(posA, posB);
+                    currentJoint = currentJoint->next;
+                }
+            }
         }
 
         emit RequestCheckForGameOver();
