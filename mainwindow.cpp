@@ -8,6 +8,9 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
 {
     ui->setupUi(this);
     ui->elementInfo->hide();//don't show any element cards before the game starts
+    ui->gameOverLabel->setVisible(false);
+    ui->tutorialButtonSide->setVisible(false);
+    ui->tutorialView->setVisible(false);
 
     //setup the element search bar
     searchElements = new QLineEdit(this);
@@ -125,6 +128,52 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &GameView::SendAtomPreview,
             this,
             &MainWindow::GetNextAtom);
+
+    connect (&model,
+            &Model::SetStartButtonVisibility,
+            ui->startButton,
+            &QPushButton::setVisible);
+
+    connect (ui->quitButton,
+            &QPushButton::clicked,
+            &model,
+            &Model::QuitGame);
+
+    connect (&model,
+            &Model::SetQuitButtonVisibility,
+            ui->quitButton,
+            &QPushButton::setVisible);
+
+    connect (&model,
+            &Model::SetGameOverLabelVisibility,
+            ui->gameOverLabel,
+            &QLabel::setVisible);
+
+    connect (&model,
+            &Model::SetTutorialButtonVisibility,
+            ui->tutorialButton,
+            &QPushButton::setVisible);
+
+    connect (&model,
+            &Model::SetTutorialButtonSideVisibility,
+            ui->tutorialButtonSide,
+            &QPushButton::setVisible);
+
+    connect (ui->tutorialButton,
+            &QPushButton::clicked,
+            &model,
+            &Model::OpenTutorial);
+
+    connect (ui->tutorialButtonSide,
+            &QPushButton::clicked,
+            &model,
+            &Model::OpenTutorial);
+
+    connect(&model,
+            &::Model::SetTutorialViewVisability,
+            ui->tutorialView,
+            &TutorialView::setVisible);
+
 
     ui->AtomImagePreview->hide();
     ui->NextElementIndicator->hide();

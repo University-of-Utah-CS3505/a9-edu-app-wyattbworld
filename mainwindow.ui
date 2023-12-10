@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="toolTipDuration">
+   <number>1</number>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="GameView" name="gameView" native="true">
     <property name="geometry">
@@ -22,19 +25,6 @@
       <width>350</width>
       <height>450</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="startButton">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>260</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start</string>
     </property>
    </widget>
    <widget class="ElementInfo" name="elementInfo" native="true">
@@ -111,6 +101,127 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="tutorialButton">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>240</y>
+      <width>129</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>17</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Tutorial</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="gameOverLabel">
+    <property name="geometry">
+     <rect>
+      <x>335</x>
+      <y>120</y>
+      <width>121</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>17</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Game Over</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="tutorialButtonSide">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>390</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Tutorial</string>
+    </property>
+   </widget>
+   <widget class="TutorialView" name="tutorialView" native="true">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>60</y>
+      <width>450</width>
+      <height>550</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="startButton">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>200</y>
+      <width>129</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>17</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="quitButton">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>280</y>
+      <width>129</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>17</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Quit</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>190</y>
+      <width>131</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout"/>
+   </widget>
+   <zorder>gameView</zorder>
+   <zorder>elementInfo</zorder>
+   <zorder>progressBar</zorder>
+   <zorder>label</zorder>
+   <zorder>NextElementIndicator</zorder>
+   <zorder>AtomImagePreview</zorder>
+   <zorder>gameOverLabel</zorder>
+   <zorder>tutorialButtonSide</zorder>
+   <zorder>startButton</zorder>
+   <zorder>tutorialButton</zorder>
+   <zorder>quitButton</zorder>
+   <zorder>tutorialView</zorder>
   </widget>
   <widget class="QMenuBar" name="menu">
    <property name="geometry">
@@ -118,7 +229,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuElements">
@@ -140,6 +251,12 @@
    <class>ElementInfo</class>
    <extends>QWidget</extends>
    <header>elementinfo.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TutorialView</class>
+   <extends>QWidget</extends>
+   <header location="global">tutorialview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -1,6 +1,7 @@
 #include "model.h"
 #include <Box2D/Box2D.h>
 #include <QDebug>
+#include <QApplication>
 
 Model::Model(QObject *parent)
     : QObject{parent}, world(b2World(b2Vec2(0.0f, 1000.0f)))
@@ -89,6 +90,13 @@ void Model::BeginGame()
     timer->start(1000/60);
     emit SendStartGame();
     emit SendAtomList(elementList);
+    emit SetStartButtonVisibility(false);
+    emit SetQuitButtonVisibility(false);
+    emit SetGameViewVisibility(true);
+    emit SetGameOverLabelVisibility(false);
+    emit SetTutorialButtonVisibility(false);
+    emit SetTutorialButtonSideVisibility(true);
+    emit SendStartGame();
 }
 
 void Model::UpdateView()
@@ -139,6 +147,13 @@ void Model::GameOver()
     vector<b2Body*> temp {bodies[0], bodies[1], bodies[2]};
     bodies = temp;
     emit SendBodies(bodies);
+
+    emit SetGameOverLabelVisibility(true);
+    emit SetGameViewVisibility(false);
+    emit SetStartButtonVisibility(true);
+    emit SetQuitButtonVisibility(true);
+    emit SetTutorialButtonVisibility(true);
+    emit SetTutorialButtonSideVisibility(false);
 }
 
 void Model::HandleCollision(b2Contact* collissions)
@@ -315,4 +330,16 @@ void Model::JoinBodies(b2Body* bodyA, b2Body* bodyB)
     qDebug() << "catalyst joint count: " << joinedBodies[bodyA].size();
     qDebug() << "non catalyst joint count: " << joinedBodies[bodyB].size();
 
+}
+
+void Model::QuitGame() {
+    QApplication::quit();
+}
+
+void Model::OpenTutorial()
+{
+
+    emit SetTutorialViewVisability(true);
+    //emit SetQuitButtonVisibility(false);
+    //emit SetStartButtonVisibility(false);
 }

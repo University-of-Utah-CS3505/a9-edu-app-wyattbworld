@@ -61,7 +61,8 @@ SOURCES += \
     gameview.cpp \
     main.cpp \
     mainwindow.cpp \
-    model.cpp
+    model.cpp \
+    tutorialview.cpp
 
 HEADERS += \
     Box2D/Box2D.h \
@@ -116,12 +117,14 @@ HEADERS += \
     gamecontactlistener.h \
     gameview.h \
     mainwindow.h \
-    model.h
+    model.h \
+    tutorialview.h
 
 FORMS += \
     elementinfo.ui \
     gameview.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    tutorialview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

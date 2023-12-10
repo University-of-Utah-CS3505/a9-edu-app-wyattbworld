@@ -18,6 +18,8 @@ class Model : public QObject
 public:
     explicit Model(QObject *parent = nullptr);
     void BeginGame();
+    void QuitGame();
+    void OpenTutorial();
 
 private:
     b2World world;
@@ -46,6 +48,7 @@ private:
     void JoinBodies(b2Body* bodyA, b2Body* bodyB); // creates joint for catalyst
     void Catalyze(b2Body* catalyst, b2Body* nonCatalyst); // handle catalyst
 
+
 public slots:
     void SendBodiesTemp();
     void UpdateView();
@@ -61,6 +64,13 @@ signals:
     void SendAtomList(QVector<Atom*>);
     void RequestDisplayElementInfo(QString element);
     void RequestUpdateProgress(QString element, int numElementsFound);
+    void SetGameViewVisibility(bool);
+    void SetGameOverLabelVisibility(bool);
+    void SetStartButtonVisibility(bool);
+    void SetQuitButtonVisibility(bool);
+    void SetTutorialButtonVisibility(bool);
+    void SetTutorialButtonSideVisibility(bool);
+    void SetTutorialViewVisability(bool);
 };
 
 #endif // MODEL_H
