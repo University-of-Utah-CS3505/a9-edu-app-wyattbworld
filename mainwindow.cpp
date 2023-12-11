@@ -14,6 +14,8 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
     ui->gameOverLabel->setVisible(false);
     ui->tutorialButtonSide->setVisible(false);
     ui->tutorialView->setVisible(false);
+    QImage startImage(":/Start/Start/start.jpeg");
+    ui->startImage->setPixmap(QPixmap::fromImage(startImage));
 
     //setup the element search bar
     searchElements = new QLineEdit(this);
@@ -273,6 +275,7 @@ void MainWindow::DisplayMenuAndProgress(){
     ui->menu->show();
     ui->progressBar->show();
     ui->progressLabel->show();
+    ui->startImage->hide();
 }
 
 

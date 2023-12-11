@@ -80,9 +80,15 @@
      <rect>
       <x>90</x>
       <y>120</y>
-      <width>81</width>
+      <width>91</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Tw Cen MT Condensed Extra Bold</family>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Next Element:</string>
@@ -104,19 +110,20 @@
    <widget class="QPushButton" name="tutorialButton">
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>240</y>
+      <x>461</x>
+      <y>460</y>
       <width>129</width>
       <height>39</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Tw Cen MT Condensed Extra Bold</family>
       <pointsize>17</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Tutorial</string>
+     <string>TUTORIAL</string>
     </property>
    </widget>
    <widget class="QLabel" name="gameOverLabel">
@@ -130,6 +137,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Tw Cen MT Condensed Extra Bold</family>
       <pointsize>17</pointsize>
      </font>
     </property>
@@ -143,11 +151,17 @@
    <widget class="QPushButton" name="tutorialButtonSide">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>390</y>
+      <x>90</x>
+      <y>260</y>
       <width>75</width>
       <height>24</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Tw Cen MT Condensed Extra Bold</family>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Tutorial</string>
@@ -156,7 +170,7 @@
    <widget class="TutorialView" name="tutorialView" native="true">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>180</x>
       <y>60</y>
       <width>470</width>
       <height>540</height>
@@ -166,39 +180,70 @@
    <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>200</y>
+      <x>461</x>
+      <y>420</y>
       <width>129</width>
       <height>39</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Tw Cen MT Condensed Extra Bold</family>
       <pointsize>17</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Start</string>
+     <string>START</string>
+    </property>
+    <property name="icon">
+     <iconset theme="face-angel"/>
     </property>
    </widget>
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>280</y>
+      <x>461</x>
+      <y>500</y>
       <width>129</width>
       <height>39</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Tw Cen MT Condensed Extra Bold</family>
       <pointsize>17</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Quit</string>
+     <string>QUIT</string>
     </property>
    </widget>
+   <widget class="QLabel" name="startImage">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-20</y>
+      <width>1000</width>
+      <height>800</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="lineWidth">
+     <number>3</number>
+    </property>
+    <property name="midLineWidth">
+     <number>3</number>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <zorder>startImage</zorder>
    <zorder>gameView</zorder>
    <zorder>elementInfo</zorder>
    <zorder>progressBar</zorder>
@@ -218,8 +263,13 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>21</height>
+     <height>18</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Tw Cen MT Condensed Extra Bold</family>
+    </font>
    </property>
    <widget class="QMenu" name="menuElements">
     <property name="title">
