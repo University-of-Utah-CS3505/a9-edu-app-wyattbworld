@@ -284,6 +284,7 @@ void Model::Catalyze(b2Body* catalyst, b2Body* nonCatalyst)
         }
 
         MakeCircleBody(0, 0, newRadius);
+        SendElementStatus(elementList[newRadius/3-1]->elementNotation);
         // We are not deleting every joined noncatalyst, just the most recently joined.
         // Thus the non removed noncatayst isn't removed from the jointCount.
 
