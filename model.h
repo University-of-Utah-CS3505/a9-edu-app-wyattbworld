@@ -71,6 +71,8 @@ signals:
     void SetTutorialButtonVisibility(bool);
     void SetTutorialButtonSideVisibility(bool);
     void SetTutorialViewVisability(bool);
+    void SetAtomImagePreviewVisability(bool);
+    void SetNextElementIndicator(bool);
 };
 
 #endif // MODEL_H

@@ -158,8 +158,8 @@
      <rect>
       <x>170</x>
       <y>60</y>
-      <width>450</width>
-      <height>550</height>
+      <width>470</width>
+      <height>540</height>
      </rect>
     </property>
    </widget>
@@ -198,17 +198,6 @@
     <property name="text">
      <string>Quit</string>
     </property>
-   </widget>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>190</y>
-      <width>131</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout"/>
    </widget>
    <zorder>gameView</zorder>
    <zorder>elementInfo</zorder>

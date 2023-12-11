@@ -170,9 +170,24 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &Model::OpenTutorial);
 
     connect(&model,
-            &::Model::SetTutorialViewVisability,
+            &Model::SetTutorialViewVisability,
             ui->tutorialView,
             &TutorialView::setVisible);
+
+    connect(&model,
+            &Model::SetGameViewVisibility,
+            ui->gameView,
+            &GameView::setVisible);
+
+    connect(&model,
+            &Model::SetAtomImagePreviewVisability,
+            ui->AtomImagePreview,
+            &QLabel::setVisible);
+
+    connect(&model,
+            &Model::SetNextElementIndicator,
+            ui->NextElementIndicator,
+            &QLabel::setVisible);
 
 
     ui->AtomImagePreview->hide();

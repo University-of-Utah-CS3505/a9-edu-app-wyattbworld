@@ -137,5 +137,6 @@ DISTFILES += \
 
 RESOURCES += \
     AtomImages.qrc \
-    ElementImages.qrc
+    ElementImages.qrc \
+    Tutorial.qrc
     ElementImages.qrc

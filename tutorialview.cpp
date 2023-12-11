@@ -7,6 +7,7 @@ TutorialView::TutorialView(QWidget *parent) :
     ui(new Ui::TutorialView)
 {
     ui->setupUi(this);
+    ui->exitButton->setStyleSheet(QString("background-color: #BB4430;"));
 }
 
 TutorialView::~TutorialView()

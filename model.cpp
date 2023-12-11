@@ -96,6 +96,8 @@ void Model::BeginGame()
     emit SetGameOverLabelVisibility(false);
     emit SetTutorialButtonVisibility(false);
     emit SetTutorialButtonSideVisibility(true);
+    emit SetAtomImagePreviewVisability(true);
+    emit SetNextElementIndicator(true);
     emit SendStartGame();
 }
 
@@ -154,6 +156,8 @@ void Model::GameOver()
     emit SetQuitButtonVisibility(true);
     emit SetTutorialButtonVisibility(true);
     emit SetTutorialButtonSideVisibility(false);
+    emit SetAtomImagePreviewVisability(false);
+    emit SetNextElementIndicator(false);
 }
 
 void Model::HandleCollision(b2Contact* collissions)
