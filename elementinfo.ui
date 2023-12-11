@@ -122,6 +122,19 @@
      <string>X</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>280</y>
+      <width>291</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Info by: Fisher Scientific, &quot;Interactive Period Table&quot;</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="keyProperties">
    <property name="geometry">
