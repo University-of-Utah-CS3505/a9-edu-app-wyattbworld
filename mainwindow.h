@@ -62,6 +62,8 @@ public slots:
     ///
     void DisplaySearchResults();
 
+    void DisplayMenuAndProgress();
+
     void StartElementPreviews();
     void GetNextAtom(Atom* nextAtom);
 signals:

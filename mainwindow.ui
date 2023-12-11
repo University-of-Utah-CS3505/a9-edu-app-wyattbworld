@@ -56,7 +56,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="progressLabel">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -202,7 +202,7 @@
    <zorder>gameView</zorder>
    <zorder>elementInfo</zorder>
    <zorder>progressBar</zorder>
-   <zorder>label</zorder>
+   <zorder>progressLabel</zorder>
    <zorder>NextElementIndicator</zorder>
    <zorder>AtomImagePreview</zorder>
    <zorder>gameOverLabel</zorder>
@@ -218,7 +218,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuElements">

@@ -8,6 +8,9 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
 {
     ui->setupUi(this);
     ui->elementInfo->hide();//don't show any element cards before the game starts
+    ui->progressBar->hide();
+    ui->progressLabel->hide();
+    ui->menu->hide();
     ui->gameOverLabel->setVisible(false);
     ui->tutorialButtonSide->setVisible(false);
     ui->tutorialView->setVisible(false);
@@ -118,6 +121,11 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &QLineEdit::returnPressed,
             this,
             &MainWindow::DisplaySearchResults);
+
+    connect(ui->startButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::DisplayMenuAndProgress);
 
     connect (ui->startButton,
             &QPushButton::clicked,
@@ -259,6 +267,12 @@ void MainWindow::DisplaySearchResults(){
     //display the search results in the same position as the menu
     QPoint searchPos = searchElements->mapToGlobal(QPoint(searchElements->width(), searchElements->height()));
     ui->menuElements->exec(searchPos);
+}
+
+void MainWindow::DisplayMenuAndProgress(){
+    ui->menu->show();
+    ui->progressBar->show();
+    ui->progressLabel->show();
 }
 
 
