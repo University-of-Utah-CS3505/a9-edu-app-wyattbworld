@@ -57,7 +57,6 @@ SOURCES += \
     Box2D/Rope/b2Rope.cpp \
     atom.cpp \
     elementinfo.cpp \
-    gamecontactlistener.cpp \
     gameview.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -114,7 +113,6 @@ HEADERS += \
     Box2D/Rope/b2Rope.h \
     atom.h \
     elementinfo.h \
-    gamecontactlistener.h \
     gameview.h \
     mainwindow.h \
     model.h \
