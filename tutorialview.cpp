@@ -2,6 +2,13 @@
 #include "qpainter.h"
 #include "ui_tutorialview.h"
 
+/*
+Wyatt Bruchhauser, Jackson Wetzel, Julia Thomas, Bodie Criswell, Nathaniel Pimentel, Brenlie Shirts
+Reviewer: Julia Thomas
+CS 3505
+Assignment 9: Education App
+This class represents the window that comes up when the tutorial button is pressed. Displays information on how to play the game
+*/
 TutorialView::TutorialView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TutorialView)
@@ -15,7 +22,10 @@ TutorialView::~TutorialView()
     delete ui;
 }
 
-void TutorialView::on_exitButton_clicked()
+///
+/// \brief onExitButtonClicked
+///
+void TutorialView::OnExitButtonClicked()
 {
     qDebug() << "connecting";
     this->setVisible(false);

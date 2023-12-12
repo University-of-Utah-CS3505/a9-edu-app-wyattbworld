@@ -11,6 +11,13 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+/*
+Wyatt Bruchhauser, Jackson Wetzel, Julia Thomas, Bodie Criswell, Nathaniel Pimentel, Brenlie Shirts
+Reviewer: Julia Thomas
+CS 3505
+Assignment 9: Educational App
+This class represents the main view for the game
+*/
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -62,6 +69,9 @@ public slots:
     ///
     void DisplaySearchResults();
 
+    ///
+    /// \brief DisplayMenuAndProgress Displays the menu and progess bar
+    ///
     void DisplayMenuAndProgress();
 
     ///

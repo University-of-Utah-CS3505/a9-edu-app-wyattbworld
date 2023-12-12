@@ -1,7 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-
+/*
+Wyatt Bruchhauser, Jackson Wetzel, Julia Thomas, Bodie Criswell, Nathaniel Pimentel, Brenlie Shirts
+Reviewer: Julia Thomas
+CS 3505
+Assignment 9: Educational App
+This class represents the main view for the game
+*/
 MainWindow::MainWindow(Model &model, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -44,11 +50,6 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &Model::SendBodies,
             ui->gameView,
             &GameView::ReceiveBodies);
-
-    connect (ui->startButton,
-            &QPushButton::clicked,
-            &model,
-            &Model::SendBodiesTemp);
 
     connect (ui->gameView,
             &GameView::RequestMakeCircleBody,
@@ -124,30 +125,16 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             this,
             &MainWindow::DisplaySearchResults);
 
-    connect(ui->startButton,
-            &QPushButton::clicked,
-            this,
-            &MainWindow::DisplayMenuAndProgress);
-
-    connect (ui->startButton,
-            &QPushButton::clicked,
-            this,
-            &MainWindow::StartElementPreviews);
-
     connect (ui->gameView,
             &GameView::SendAtomPreview,
             this,
             &MainWindow::GetNextAtom);
 
+    // Set the visibility of objects in the view
     connect (&model,
             &Model::SetStartButtonVisibility,
             ui->startButton,
             &QPushButton::setVisible);
-
-    connect (ui->quitButton,
-            &QPushButton::clicked,
-            &model,
-            &Model::QuitGame);
 
     connect (&model,
             &Model::SetQuitButtonVisibility,
@@ -169,16 +156,6 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             ui->tutorialButtonSide,
             &QPushButton::setVisible);
 
-    connect (ui->tutorialButton,
-            &QPushButton::clicked,
-            &model,
-            &Model::OpenTutorial);
-
-    connect (ui->tutorialButtonSide,
-            &QPushButton::clicked,
-            &model,
-            &Model::OpenTutorial);
-
     connect(&model,
             &Model::SetTutorialViewVisability,
             ui->tutorialView,
@@ -198,6 +175,37 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             &Model::SetNextElementIndicator,
             ui->NextElementIndicator,
             &QLabel::setVisible);
+
+    // Connect buttons to their respective methods
+    connect (ui->tutorialButton,
+            &QPushButton::clicked,
+            &model,
+            &Model::OpenTutorial);
+
+    connect (ui->tutorialButtonSide,
+            &QPushButton::clicked,
+            &model,
+            &Model::OpenTutorial);
+
+    connect (ui->quitButton,
+            &QPushButton::clicked,
+            &model,
+            &Model::QuitGame);
+
+    connect(ui->startButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::DisplayMenuAndProgress);
+
+    connect (ui->startButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::StartElementPreviews);
+
+    connect (ui->startButton,
+            &QPushButton::clicked,
+            &model,
+            &Model::SendBodiesTemp);
 
     // Hide the element preview widgets on startup.
     ui->AtomImagePreview->hide();
