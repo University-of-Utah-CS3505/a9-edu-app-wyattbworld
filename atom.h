@@ -4,9 +4,16 @@
 #include "qpixmap.h"
 #include <QObject>
 #include <QString>
-#include <math.h>
 #include <QImage>
 
+/*
+ * Wyatt Bruchhauser, Jackson Wetzel, Julia Thomas, Bodie Criswell, Nathaniel Pimentel, Brenlie Shirts
+ * Reviewer: Jackson Wetzel
+ * CS3505
+ * Assignment 9: Education App
+ * File Description: The Atom class serves to contain all logistical information about an Atom.
+ * The Atom object is then bound to a specific physical body elsewhere in the program, appearing differently based on its size.
+ */
 class Atom : public QObject
 {
     Q_OBJECT
@@ -14,27 +21,21 @@ class Atom : public QObject
 public:
     explicit Atom (QObject *parent = nullptr,
                   int protonCount = 1);
-    Atom& operator= (Atom other);       // Assignment overload
     bool isInert;                       // Defines whether this atom reacts with others.
     bool isCatalyst;                    // Defines whether this atom can catalyze.
     ///
     /// \brief Split divides this Atom in two, halving its proton count and spawning an identical Atom.
     ///
     void Split ();
-    ///
-    /// \brief CopyAtom creates a copy of this Atom object.
-    /// \return The copy of this Atom.
-    ///
-    Atom* CopyAtom ();
-    static const std::vector<QString> NOTATIONLIST; // The list of all elements being used in the game.
+    // The list of all elements being used in the game.
+    static const std::vector<QString> NOTATIONLIST;
     int atomicNumber;                   // The number of protons in this Atom.
     QString elementNotation;            // This Atom's chemical notation.
-    float radius;
-    QPixmap atomBody;
+    float radius;                       // The Atom's relative size.
+    QPixmap atomBody;                   // The image containing this Atom's atomic number and notation.
 
 
 private:
-    const int LOGBASE = std::exp(1.0);
 
 signals:
     ///

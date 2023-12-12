@@ -199,7 +199,7 @@ MainWindow::MainWindow(Model &model, QWidget *parent)
             ui->NextElementIndicator,
             &QLabel::setVisible);
 
-
+    // Hide the element preview widgets on startup.
     ui->AtomImagePreview->hide();
     ui->NextElementIndicator->hide();
 
@@ -218,9 +218,11 @@ void MainWindow::StartElementPreviews()
 
 void MainWindow::GetNextAtom(Atom* nextAtom)
 {
+    // Grab the image associated with the atom and scale it.
     QPixmap atomBody = QPixmap("://Elements//Elements/"+ nextAtom->elementNotation + ".png");
     QSize size(80, 80);
     atomBody = atomBody.scaled(size);
+    // Send the scaled image to the appropriate Label widget to be displayed.
     ui->AtomImagePreview->setPixmap(atomBody);
 }
 

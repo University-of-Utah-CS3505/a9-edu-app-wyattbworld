@@ -11,6 +11,7 @@ Atom::Atom(QObject *parent,
            int protonCount)
     : QObject{parent}
 {
+    // Initialize all necessary attributes
     atomicNumber = protonCount;
     elementNotation = NOTATIONLIST[atomicNumber-1];
     radius = atomicNumber*3;
@@ -26,6 +27,7 @@ Atom::Atom(QObject *parent,
         isInert = true;
         isCatalyst = true;
     }
+    // Assign this Atom's associated image and scale it to the size of the physical body.
     atomBody = QPixmap("://Elements//Elements/"+ elementNotation + ".png");
     QSize size(radius*2, radius*2);
     atomBody = atomBody.scaled(size);

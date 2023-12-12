@@ -64,8 +64,17 @@ public slots:
 
     void DisplayMenuAndProgress();
 
+    ///
+    /// \brief StartElementPreviews Shows the widgets that display the next element.
+    ///
     void StartElementPreviews();
+
+    ///
+    /// \brief GetNextAtom Sets up the preview of the next randomly generated Atom to be dropped.
+    /// \param nextAtom The information about the next Atom.
+    ///
     void GetNextAtom(Atom* nextAtom);
+
 signals:
     ///
     /// \brief RequestDisplayElementInfo Signals that we need to display a new element's information
