@@ -3,11 +3,9 @@
 
 #include <QObject>
 #include <Box2D/Box2D.h>
-#include <stdio.h>
 #include <QTimer>
 #include <atom.h>
 #include <QMap>
-#include "gamecontactlistener.h"
 
 using std::vector;
 using std::map;
@@ -29,25 +27,40 @@ private:
 
     QTimer* timer;
     QVector<Atom*> elementList;
-
     QMap<QString, bool> elementStatus;
-
     int numElementsFound;
-
-    GameContactListener contactListener;
-
-
     vector<b2Body*> bodies;
-    map<b2Body*, int> catalystJointCount;
     map<b2Body*, vector<b2Body*>> joinedBodies;
 
-
     void GameOver(); //Activates the game over sequence.
-    void HandleCollision(b2Contact* collissions); // called in update to hanlde all current collissions
-    void RemoveBodies(b2Body* body); // removes bodies from the world
-    void JoinBodies(b2Body* bodyA, b2Body* bodyB); // creates joint for catalyst
-    void Catalyze(b2Body* catalyst, b2Body* nonCatalyst); // handle catalyst
 
+    ///
+    /// \brief HandleCollision Combine elements.
+    /// Noble gasses are inert and catalysts act join with elements unitl a certain threshold.
+    /// Walls are ignored.
+    /// \param collissions List of fixture contacts.
+    ///
+    void HandleCollision(b2Contact* collisions);
+
+    ///
+    /// \brief RemoveBody Removes a body from the world and model.
+    /// \param body Body to remove.
+    ///
+    void RemoveBody(b2Body* body);
+
+    ///
+    /// \brief JoinBodies Joins catalyst with non catalyst.
+    /// \param bodyA Catalyst.
+    /// \param bodyB Non catalyst.
+    ///
+    void JoinBodies(b2Body* bodyA, b2Body* bodyB);
+
+    ///
+    /// \brief Catalyze A catalyst builds up non catalysts, then reaction occurs when a certain threshold is met.
+    /// \param catalyst Catalyst with certain threshold
+    /// \param nonCatalyst Becomes inert when joined with catalyst.
+    ///
+    void Catalyze(b2Body* catalyst, b2Body* nonCatalyst);
 
 public slots:
     void SendBodiesTemp();

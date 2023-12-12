@@ -13,25 +13,15 @@ Model::Model(QObject *parent)
             this,
             &Model::UpdateView);
 
-    world.SetContactListener(&contactListener);
-
-    // Define the ground body.
+    // Ground
     b2BodyDef groundBodyDef;
-
-    // Set up the ground position. 90 seems to match the gameview's ground
     groundBodyDef.position.Set(0.0f, 100.0f);
-
-    // Call the body factory which allocates memory for the ground body
-    // from a pool and creates the ground box shape (also from a pool).
-    // The body is also added to the world.
     b2Body* groundBody = world.CreateBody(&groundBodyDef);
-    // Define the ground box shape.
     b2PolygonShape groundBox;
-    // The extents are the half-widths of the box.
     groundBox.SetAsBox(500.0f, 2.0f);
-    // Add the ground fixture to the ground body.
     groundBody->CreateFixture(&groundBox, 0.0f);
 
+    // Left Wall
     b2BodyDef leftWallBodyDef;
     leftWallBodyDef.position.Set(-175.0f, 100.0f);
     b2Body* leftWallBody = world.CreateBody(&leftWallBodyDef);
@@ -39,6 +29,7 @@ Model::Model(QObject *parent)
     leftWallBox.SetAsBox(2.0f, 800.0f);
     leftWallBody->CreateFixture(&leftWallBox, 0.0f);
 
+    // Right wall
     b2BodyDef rightWallBodyDef;
     rightWallBodyDef.position.Set(175.0f, 100.0f);
     b2Body* rightWallBody = world.CreateBody(&rightWallBodyDef);
@@ -70,7 +61,6 @@ void Model::MakeCircleBody(float x, float y, float radius)
     circleDef.type = b2_dynamicBody;
     circleDef.position.Set(x, y);
     b2Body* circleBody = world.CreateBody(&circleDef);
-    circleBody->SetUserData(this);
 
     b2CircleShape circleShape;
     circleShape.m_radius = radius;
@@ -160,54 +150,48 @@ void Model::GameOver()
     emit SetNextElementIndicator(false);
 }
 
-void Model::HandleCollision(b2Contact* collissions)
+void Model::HandleCollision(b2Contact* collisions)
 {
-    b2Contact* currentContact = collissions;
+    b2Contact* currentContact = collisions;
     while(currentContact != nullptr)
     {
         b2Body* bodyA = currentContact->GetFixtureA()->GetBody();
         b2Body* bodyB = currentContact->GetFixtureB()->GetBody();
 
         // ignore contacts with the floor or walls
-        if(bodyA->GetType() == 0 || bodyB->GetType() == 0)
+        if(bodyA->GetType() == 0 || bodyB->GetType() == 0) {
             return;
-
+        }
 
         float radiusA = bodyA->GetFixtureList()->GetShape()->m_radius;
         float radiusB = bodyB->GetFixtureList()->GetShape()->m_radius;
         float newRadius = radiusA + radiusB;
 
-        // check if one of them is a catalyst
+        // Catalysts are joined with elements until a certain threshold
         bool isACatalyst = (radiusA/3 >= 21 && radiusA/3 <= 30) || (radiusA/3 >= 39 && radiusA/3 <= 48);
         bool isBCatalyst = (radiusB/3 >= 21 && radiusB/3 <= 30) || (radiusB/3 >= 39 && radiusB/3 <= 48);
 
-        QString elementA = elementList[radiusA/3-1]->elementNotation;
-        QString elementB = elementList[radiusB/3-1]->elementNotation;
-        // qDebug() << elementA << " is catalyst: "  << isACatalyst;
-        // qDebug() << elementB << " is catalyst: " << isBCatalyst;
-
-
+        // Noble gasses are inert
         bool isANobleGas = (radiusA/3 == 2) || (radiusA/3 == 10) || (radiusA/3 == 18) || (radiusA/3 == 36) || (radiusA/3 == 54);
         bool isBNobleGas = (radiusB/3 == 2) || (radiusB/3 == 10) || (radiusB/3 == 18) || (radiusB/3 == 36) || (radiusB/3 == 54);
-        if(isANobleGas || isBNobleGas)
+        if(isANobleGas || isBNobleGas) {
             return;
+        }
 
-        // If non catalyst has a joint, ignore it
-        // for ignoring elemets when joined to a catalyst
+        // Elements are inert when joined to a catalyst
         if((isACatalyst && bodyB->GetJointList() != nullptr)
             || (isBCatalyst && bodyA->GetJointList() != nullptr)) {
             return;
         }
 
-        // Two non catalysts collide and either one is joined, we don't want them to combine
+        // Two non catalysts are inert if joined to a catalyst
         bool bothNonCatalyst = !isACatalyst && !isBCatalyst;
         bool eitherHaveJoints =  bodyB->GetJointList() != nullptr || bodyA->GetJointList() != nullptr;
         if(bothNonCatalyst && eitherHaveJoints) {
             return;
         }
 
-
-        // Prevents catalysts from reacting
+        // Prevents catalysts from combining
         if((!isACatalyst && isBCatalyst) || (isACatalyst && !isBCatalyst))
         {
             // join the bodies and calculate the catalyst threshold
@@ -226,14 +210,12 @@ void Model::HandleCollision(b2Contact* collissions)
         }
         else if(newRadius/3-1 < 54)
         {
-            qDebug() << elementA << " combine " << elementB;
-            // Make a circle based on posA
+            // Make a new element
             MakeCircleBody(bodyA->GetPosition().x, bodyA->GetPosition().y, newRadius);
-            // Remove bodies when they collide
-            RemoveBodies(bodyA);
-            RemoveBodies(bodyB);
+            RemoveBody(bodyA);
+            RemoveBody(bodyB);
 
-            // check to see if element is new
+            // check to see if element is new, to display info
             SendElementStatus(elementList[newRadius/3-1]->elementNotation);
         }
         currentContact = currentContact->GetNext();
@@ -243,70 +225,42 @@ void Model::HandleCollision(b2Contact* collissions)
 void Model::Catalyze(b2Body* catalyst, b2Body* nonCatalyst)
 {
     JoinBodies(catalyst, nonCatalyst);
-    b2Vec2 catalystPos = catalyst->GetPosition();
     float radius = catalyst->GetFixtureList()->GetShape()->m_radius;
     int catalystThreshold = radius/12;
-    qDebug() << "catalyst threshold: " << catalystThreshold;
     int newRadius = 0;
 
     // When reaction occurs
     if(joinedBodies[catalyst].size() >= (unsigned int) catalystThreshold)
     {
-        qDebug() << "Removing catalyst";
-        // Crashing inconsistenly when reaction occurs.
-        // Probably something to do with the order that bodies and joints are deleted
-
-        // add new bodies
-//        for(b2Body* body : joinedBodies[catalyst]) {
-//            MakeCircleBody(catalystPos.x, catalystPos.y, body->GetFixtureList()->GetShape()->m_radius);
-//        }
-
-
-          // recombining crashes
-//        // remove the joints attatched to the catalyst
-//        int buffer = 2000;
-//        b2JointEdge* currentJoint = catalyst->GetJointList();
-//        while(currentJoint != nullptr)
-//        {
-//            QTimer::singleShot(buffer, this, [=](){world.DestroyJoint(currentJoint->joint);});
-//            currentJoint = currentJoint->next;
-//            buffer = buffer + 2000;
-//        }
-//        // Remove joined bodies
+        // Remove joined bodies
         for(b2Body* body : joinedBodies[catalyst]) {
             newRadius += body->GetFixtureList()->GetShape()->m_radius;
-            RemoveBodies(body);
+            RemoveBody(body);
         }
-        RemoveBodies(catalyst);
+        RemoveBody(catalyst);
 
-        if(newRadius/3-1 >54) {
+        // Check if valid element
+        if(newRadius/3-1 > 54) {
             newRadius = 162;
         }
 
+        // Make new element
         MakeCircleBody(0, 0, newRadius);
         SendElementStatus(elementList[newRadius/3-1]->elementNotation);
-        // We are not deleting every joined noncatalyst, just the most recently joined.
-        // Thus the non removed noncatayst isn't removed from the jointCount.
-
-        // Can fix by changing jointCount to just hold joints (map of catalyst and vector of non catalysts)
     }
 }
 
-void Model::RemoveBodies(b2Body* body)
+void Model::RemoveBody(b2Body* body)
 {
-    // Remove bodyA from bodies and world
     vector<b2Body*>::iterator it = std::find(bodies.begin(), bodies.end(), body);
     bodies.erase(it);
     world.DestroyBody(body);
-    // catalystJointCount.erase(body);
     joinedBodies.erase(body);
-
     emit SendBodies(bodies);
 }
 
 void Model::JoinBodies(b2Body* bodyA, b2Body* bodyB)
 {
-    qDebug() << "begin joint creation";
     float radiusA = bodyA->GetFixtureList()->GetShape()->m_radius;
     float radiusB = bodyB->GetFixtureList()->GetShape()->m_radius;
 
@@ -320,21 +274,9 @@ void Model::JoinBodies(b2Body* bodyA, b2Body* bodyB)
     jointDef.collideConnected = true;
     bodyA->GetWorld()->CreateJoint(&jointDef);
 
-    // Accumlate joint count
-    // catalystJointCount[bodyA] += 1;
-    // catalystJointCount[bodyB] += 1;
-
     // Keep track of which bodies are joined
     joinedBodies[bodyA].push_back(bodyB);
     joinedBodies[bodyB].push_back(bodyA);
-
-
-    // qDebug() << "catalyst joint count: " << catalystJointCount[bodyA];
-    // qDebug() << "non catalyst joint count: " << catalystJointCount[bodyB];
-
-    qDebug() << "catalyst joint count: " << joinedBodies[bodyA].size();
-    qDebug() << "non catalyst joint count: " << joinedBodies[bodyB].size();
-
 }
 
 void Model::QuitGame() {
@@ -343,8 +285,5 @@ void Model::QuitGame() {
 
 void Model::OpenTutorial()
 {
-
     emit SetTutorialViewVisability(true);
-    //emit SetQuitButtonVisibility(false);
-    //emit SetStartButtonVisibility(false);
 }
