@@ -15,6 +15,11 @@ TutorialView::TutorialView(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->exitButton->setStyleSheet(QString("background-color: #BB4430;"));
+
+    connect(ui->exitButton,
+            &QPushButton::clicked,
+            this,
+            TutorialView::OnExitButtonClicked);
 }
 
 TutorialView::~TutorialView()
