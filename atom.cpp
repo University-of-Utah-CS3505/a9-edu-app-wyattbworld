@@ -1,5 +1,13 @@
 #include "atom.h"
 #include "qpixmap.h"
+/*
+ * Wyatt Bruchhauser, Jackson Wetzel, Julia Thomas, Bodie Criswell, Nathaniel Pimentel, Brenlie Shirts
+ * Reviewer: Jackson Wetzel
+ * CS3505
+ * Assignment 9: Education App
+ * File Description: The Atom class serves to contain all logistical information about an Atom.
+ * The Atom object is then bound to a specific physical body elsewhere in the program, appearing differently based on its size.
+ */
 
 // All of the first 54 elements from Hydrogen to Xenon.
 const std::vector<QString> Atom::NOTATIONLIST = {"H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",

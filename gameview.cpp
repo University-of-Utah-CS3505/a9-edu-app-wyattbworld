@@ -1,6 +1,7 @@
 /*
 Wyatt Bruchhauser, Jackson Wetzel, Julia Thomas, Bodie Criswell, Nathaniel Pimentel, Brenlie Shirts
 CS 3505
+Reviewer: Wyatt Bruchhauser
 Assignment 9 : Educational App
 File Description: This file details the functionality of our game window.
 */
