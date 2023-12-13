@@ -1,3 +1,11 @@
+/*
+Wyatt Bruchhauser, Jackson Wetzel, Julia Thomas, Bodie Criswell, Nathaniel Pimentel, Brenlie Shirts
+Reviewer: Bodie Crsiwell, Nathaniel Pimentel
+CS 3505
+Assignment 9: Educational App
+This class declares the methods and fields of our model class. It represents the model in the MV application design.
+*/
+
 #ifndef MODEL_H
 #define MODEL_H
 
@@ -63,29 +71,57 @@ private:
     void Catalyze(b2Body* catalyst, b2Body* nonCatalyst);
 
 public slots:
+    ///
+    /// \brief SendBodiesTemp Recieves the request from view and sends bodies to the view to be rendered.
+    ///
     void SendBodiesTemp();
+
+    ///
+    /// \brief UpdateView Steps the simulation and handles any collissions.
+    ///
     void UpdateView();
+
+    ///
+    /// \brief MakeCircleBody Creates a new circle body in the simulation.
+    /// \param x The x coordinate in the box2D world.
+    /// \param y The y coordinate in the box2D world.
+    /// \param radius The radius of the circle shape created.
+    ///
     void MakeCircleBody(float x, float y, float radius);
-    void RecieveCheckForGameOver(); //Receives a request to check if the game is over.
+
+    ///
+    /// \brief RecieveCheckForGameOver Checks if the game is still in an active state.
+    ///
+    void RecieveCheckForGameOver();
+
+    ///
+    /// \brief SendElementStatus Requests the element status for the element specified.
+    /// \param element The element that's status will be checked.
+    ///
     void SendElementStatus(QString element);
+
+    ///
+    /// \brief UpdateElementStatus Updates the current status of the element to be found once found.
+    /// \param element The new element that was foudn.
+    ///
     void UpdateElementStatus(QString element);
 
 signals:
-    void UpdateWorld();
-    void SendBodies(vector<b2Body*> &bodies);
-    void SendStartGame();
-    void SendAtomList(QVector<Atom*>);
-    void RequestDisplayElementInfo(QString element);
-    void RequestUpdateProgress(QString element, int numElementsFound);
-    void SetGameViewVisibility(bool);
-    void SetGameOverLabelVisibility(bool);
-    void SetStartButtonVisibility(bool);
-    void SetQuitButtonVisibility(bool);
-    void SetTutorialButtonVisibility(bool);
-    void SetTutorialButtonSideVisibility(bool);
-    void SetTutorialViewVisability(bool);
-    void SetAtomImagePreviewVisability(bool);
-    void SetNextElementIndicator(bool);
+    void UpdateWorld(); // sent to view to update world state
+    void SendBodies(vector<b2Body*> &bodies); // sends the bodies vector for view to render them
+    void SendStartGame(); // sends the signal to begin the game
+    void SendAtomList(QVector<Atom*>); // sends the atom list to the view
+    void RequestDisplayElementInfo(QString element); // requests the info of an element for display
+    void RequestUpdateProgress(QString element, int numElementsFound); // requests the current game progress
+    void SetGameViewVisibility(bool); // sets the visibility of the game window in mainwindow
+    void SetGameOverLabelVisibility(bool); // enables or disables the game over screen
+    void SetStartButtonVisibility(bool); // enables or disables the start button
+    void SetQuitButtonVisibility(bool); // enables or disables the quit button
+    void SetTutorialButtonVisibility(bool); // enables or disables the toturial button
+    void SetTutorialButtonSideVisibility(bool); // enables or disables the border toturial button
+    void SetTutorialViewVisability(bool); // enables or disables the toturial
+    void SetAtomImagePreviewVisability(bool); // enables or disables the atom information window
+    void SetNextElementIndicator(bool); // enables or disables the element indicator
 };
 
 #endif // MODEL_H

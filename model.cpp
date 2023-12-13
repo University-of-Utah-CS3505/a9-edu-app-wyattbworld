@@ -1,3 +1,11 @@
+/*
+Wyatt Bruchhauser, Jackson Wetzel, Julia Thomas, Bodie Criswell, Nathaniel Pimentel, Brenlie Shirts
+Reviewer: Bodie Crsiwell, Nathaniel Pimentel
+CS 3505
+Assignment 9: Educational App
+This class represents the model for our game. It impliments the declarations in model.h.
+*/
+
 #include "model.h"
 #include <Box2D/Box2D.h>
 #include <QDebug>
@@ -57,14 +65,17 @@ Model::Model(QObject *parent)
 
 void Model::MakeCircleBody(float x, float y, float radius)
 {
+    // create the definition of the body and adds it to the world
     b2BodyDef circleDef;
     circleDef.type = b2_dynamicBody;
     circleDef.position.Set(x, y);
     b2Body* circleBody = world.CreateBody(&circleDef);
 
+    // define the shape of the body
     b2CircleShape circleShape;
     circleShape.m_radius = radius;
 
+    // attatch that shape to the fixture and define the object's characteristics
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &circleShape;
     fixtureDef.density = 1.0f;
@@ -152,6 +163,7 @@ void Model::GameOver()
 
 void Model::HandleCollision(b2Contact* collisions)
 {
+    // loops over all current contatcts registered within the world
     b2Contact* currentContact = collisions;
     while(currentContact != nullptr)
     {
@@ -218,6 +230,7 @@ void Model::HandleCollision(b2Contact* collisions)
             // check to see if element is new, to display info
             SendElementStatus(elementList[newRadius/3-1]->elementNotation);
         }
+        // progress contact loop
         currentContact = currentContact->GetNext();
     }
 }
